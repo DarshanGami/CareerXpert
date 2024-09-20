@@ -1,4 +1,4 @@
-# CareerXpert
+# GRP13_CareerXpert (Job Matching Platforms)
 # Job-Matching Platform
 
 ## Project Overview
