@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { connection } from './DB_connect.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import userRouter from './routes/userRoutes.js';
 
 
 const app = express();
@@ -18,6 +19,8 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
+
+app.use('/api/v1/user', userRouter);
 
 connection();
 app.use(errorHandler);
