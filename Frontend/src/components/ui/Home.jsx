@@ -1,9 +1,9 @@
 import React from 'react'
-import Navbar from './shared/Navbar'
+import Navbar from '../shared/Navbar'
 
 const Home = () => {
   return (
-    <div><Navbar/></div>
+    <div><Navbar /></div>
   )
 }
 

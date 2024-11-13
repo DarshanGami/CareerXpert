@@ -1,33 +1,36 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import Navbar from './components/shared/Navbar'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Home from './components/Home'
+import Home from './components/ui/Home'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
+import Forget from './components/auth/Forget'
 
 const appRouter = createBrowserRouter([
   {
-    path:'/',
-    element:<Home/>
+    path: '/',
+    element: <Home />
   },
   {
-    path:'/login',
-    element:<Login/>
+    path: '/login',
+    element: <Login />
   },
   {
-    path:'/signup',
-    element:<Signup/>
+    path: '/signup',
+    element: <Signup />
   },
-]) 
+  {
+    path: '/forgotpassword',
+    element: <Forget />,
+  },
+])
 
 function App() {
 
   return (
     <>
-      <RouterProvider router={appRouter}/>
+      <RouterProvider router={appRouter} />
     </>
   )
 }

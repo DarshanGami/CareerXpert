@@ -1,25 +1,63 @@
-import * as React from "react"
-import * as PopoverPrimitive from "@radix-ui/react-popover"
+import { useState } from 'react';
+import { LogOut } from 'lucide-react';
+import { UserRound } from 'lucide-react';
 
-import { cn } from "@/lib/utils"
+function AvatarDropdown({ userName = "Bonnie Green", userEmail = "name@flowbite.com", userImage = "/docs/images/people/profile-picture-3.jpg" }) {
+  const [isOpen, setIsOpen] = useState(false);
 
-const Popover = PopoverPrimitive.Root
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
-const PopoverTrigger = PopoverPrimitive.Trigger
+  return (
+    <div className="relative">
+      <button
+        onClick={toggleDropdown}
+        className="flex text-sm bg-gray-800 rounded-full border border-black"
+        type="button"
+      >
 
-const PopoverContent = React.forwardRef(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
-  <PopoverPrimitive.Portal>
-    <PopoverPrimitive.Content
-      ref={ref}
-      align={align}
-      sideOffset={sideOffset}
-      className={cn(
-        "z-50 w-72 rounded-md border border-neutral-200 bg-white p-4 text-neutral-950 shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-50",
-        className
+        <img
+          className="w-9 h-9 rounded-full"
+          src={userImage}
+          alt="user avatar"
+        />
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-10 right-0.5 z-10 border-2 border-blue-600 bg-white divide-y divide-gray-100 rounded-lg shadow   size:w-80 w-44 dark:bg-gray-700 dark:divide-blue-600">
+
+
+          <div className="img flex justify-center px-2 py-2">
+            <img
+              className="w-11 h-11 rounded-full border-2 border-blue-500"
+              src={userImage}
+              alt="user avatar"
+            />
+          </div>
+
+          <div className="px-4 py-3 text-base text-white">
+            <div>{userName}</div>
+            <div className="font-medium truncate">{userEmail}</div>
+          </div>
+          <ul className="py-2 text-sm text-white">
+            <li>
+              <div className='flex items-center px-4 py-2  dark:hover:bg-blue-600  dark:hover:text-white rounded-lg gap-4 text-base'>
+                <UserRound />
+                <a href="#" className="block">View Profile</a>
+              </div>
+            </li>
+          </ul>
+          <div className="py-2 text-white">
+            <div className='flex items-center px-4 py-2  dark:hover:bg-blue-600  dark:hover:text-white rounded-lg gap-4 text-base'>
+              <LogOut />
+              <a href="#" className="block">Sign out</a>
+            </div>
+          </div>
+        </div>
       )}
-      {...props} />
-  </PopoverPrimitive.Portal>
-))
-PopoverContent.displayName = PopoverPrimitive.Content.displayName
+    </div>
+  );
+}
 
-export { Popover, PopoverTrigger, PopoverContent }
+export default AvatarDropdown;
