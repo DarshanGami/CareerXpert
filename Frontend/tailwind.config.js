@@ -1,19 +1,21 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-    darkMode: ["class"],
-    content: [
+export default {
+  content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-  	extend: {
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		},
-  		colors: {}
-  	}
+    extend: {
+    
+      screens: {
+        // Add your custom breakpoints here
+        'size': '400px', // Custom breakpoint for extra-small screens
+        'size_1': '600px', // Custom breakpoint larger than xl
+        'size_2': '650px',
+        'size_500' : '500px', 
+      },
+
+    },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 }
