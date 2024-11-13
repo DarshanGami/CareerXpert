@@ -142,16 +142,22 @@ export const login = catchAsync(async (req, res, next) => {
 });
 
 
-export const logout = catchAsync(async (req, res, next) => {
 
+
+export const logout = catchAsync(async (req, res, next) => {
+    
     // clear cookie by expiring it at current time
+
     res.status(200)
-        .cookie('jwt', '', {
+        .cookie('token', '', {
             expires: new Date(Date.now()),
             httpOnly: true,
         })
         .json({
             status: 'success',
-            message: 'Logged out successfully.',
+            message: 'logged out successfully...',
         });
+
+        // after that it will be removed from client side, now shoul be redirected to login page
+
 });
