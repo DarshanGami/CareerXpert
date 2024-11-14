@@ -145,7 +145,7 @@ export const login = catchAsync(async (req, res, next) => {
 
 
 export const logout = catchAsync(async (req, res, next) => {
-    
+
     // clear cookie by expiring it at current time
 
     res.status(200)
@@ -160,4 +160,46 @@ export const logout = catchAsync(async (req, res, next) => {
 
         // after that it will be removed from client side, now shoul be redirected to login page
 
+});
+
+
+export const forgotPassword = catchAsync(async (req, res, next) => {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return next(new AppError('User not found with that email.', 404));
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    user.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    user.passwordResetExpires = Date.now() + 10 * 60 * 1000; // Token expires in 10 minutes
+    await user.save({ validateBeforeSave: false });
+
+    // Send token via email
+    const resetURL = `http://localhost:5173/reset-password/${resetToken}`;
+    await sendEmail({
+        email: user.email,
+        subject: 'Password Reset Request',
+        message: `Forgot your password? Submit a new password and confirm password to: ${resetURL}`,
+    });
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Token sent to email!',
+    });
+});
+
+
+export const resetPassword = catchAsync(async (req, res, next) => {
+    const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+    const user = await User.findOne({
+        passwordResetToken: hashedToken,
+        passwordResetExpires: { $gt: Date.now() },
+    });
+    if (!user) return next(new AppError('Token is invalid or has expired', 400));
+
+    user.password = req.body.password;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    createSendToken(user, 200, res, 'Password reset successfull.');
 });

@@ -40,13 +40,23 @@ const userSchema = new mongoose.Schema({
         // required: true,
     },
 
+    city: {
+        type: String,
+        // required: true,
+    },
+
     address: {
         type: String,
         // required: true,
     },
 
-    skills: {
+    aboutMe: {
         type: String,
+        // required: true,
+    },
+
+    skills: {
+        type: [String],
         // required: true,
         enum: ['C++', 'SQL', 'python', 'Reactjs', 'nodejs', 'API Testing'],
     },
@@ -72,9 +82,12 @@ const userSchema = new mongoose.Schema({
     },
 
     passwordResetToken: String,
+        
 
     passwordResetExpires: Date,
-    
+        
+
+
 }, {timestamps:true});
 
 
@@ -84,5 +97,9 @@ userSchema.pre('save', async function (next) {
     }
     this.password = await bcrypt.hash(this.password, 12);
 });
+
+// userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
+//     return await bcrypt.compare(candidatePassword, userPassword);
+// };
 
 export const User = mongoose.model('User', userSchema);

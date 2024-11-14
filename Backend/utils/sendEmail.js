@@ -25,18 +25,29 @@ export const sendVerificationEmail = (email, token) => {
 };
 
 export const sendEmail = async (options) => {
+
+    // might need to change the email template later
+    
+    // setting up mail content 
     const mailOptions = {
-        from: `Rudra Patel ${process.env.EMAIL_USER}`, // Replace with your email or service email
+        from: `CareerXpert ${process.env.EMAIL_USER}`, // Replace with your email or service email
         to: options.email,
         subject: options.subject,
-        text: options.message, // Plain text body
-        // html: options.html, // Uncomment to send HTML email
+        text: options.message, 
+        // html: options.html, 
     };
 
+    // send mail with defined transport object
     await transporter.sendMail(mailOptions);
 };
 
-  
+
+
+
+
+
+
+
 
 
 
