@@ -24,6 +24,38 @@ const companySchema = new mongoose.Schema({
         default: false,
     },
 
+    website: {
+        type: String,
+    },
+
+    employees: {
+        type: Number
+    },
+
+    branches: {
+        type: Number
+    },
+
+    social: {
+
+        linkedin: {
+            type: String,
+        },
+
+        facebook: {
+            type: String,
+        },
+
+        twitter: {
+            type: String,
+        },
+
+        instagram: {
+            type: String,
+        },
+
+    },
+    
     opportunities: [{
         type: Schema.Types.ObjectId,
         ref: 'Job',
