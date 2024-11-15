@@ -6,6 +6,7 @@ import Home from './components/ui/Home'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
 import Forget from './components/auth/Forget'
+import JobPost from './components/jobs/JobPost'
 
 const appRouter = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const appRouter = createBrowserRouter([
     path: '/forgotpassword',
     element: <Forget />,
   },
+  {
+    path: '/post-job',
+    element: <JobPost />
+  }
 ])
 
 function App() {
@@ -31,6 +36,7 @@ function App() {
   return (
     <>
       <RouterProvider router={appRouter} />
+      <Toaster position='top-right' reverseOrder={false} />
     </>
   )
 }
