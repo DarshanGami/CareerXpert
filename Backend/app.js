@@ -4,7 +4,8 @@ import cookieParser from 'cookie-parser';
 import { connection } from './DB_connect.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import userRouter from './routes/userRoutes.js';
-
+import jobRouter1 from './routes/jobRoutes1.js';
+import jobRouter2 from './routes/jobRoutes2.js';
 
 const app = express();
 
@@ -21,6 +22,10 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use('/api/v1/user', userRouter);
+
+app.use('/api/v1/job', jobRouter1);
+
+app.use('/api/v1/jobs', jobRouter2);
 
 connection();
 app.use(errorHandler);
