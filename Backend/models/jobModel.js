@@ -30,6 +30,12 @@ const jobSchema = new mongoose.Schema({
         required: true
     },
 
+    timing: {
+        type: String,
+        enum: ['Full Time', 'Part Time', 'Internship', 'Contract', 'Freelance'],
+        required: true
+    },
+
     perks: {
         type: [String]
     },
@@ -53,6 +59,7 @@ const jobSchema = new mongoose.Schema({
 
     userType: {
         type: String,
+        required: true,
         enum: ['College Students', 'Fresher', 'Professionals']
     },
 
@@ -63,7 +70,8 @@ const jobSchema = new mongoose.Schema({
     },
 
     deadline: {
-        type: Date
+        type: Date,
+        required: true
     },
 
     company: {
