@@ -6,6 +6,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import userRouter from './routes/userRoutes.js';
 import jobRouter1 from './routes/jobRoutes1.js';
 import jobRouter2 from './routes/jobRoutes2.js';
+import companyRouter from './routes/companyRoutes.js';
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/api/v1/job', jobRouter1);
 
 app.use('/api/v1/jobs', jobRouter2);
 
+app.use('/api/v1/company', companyRouter);
 connection();
 app.use(errorHandler);
 

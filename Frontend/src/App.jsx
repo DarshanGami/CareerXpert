@@ -7,7 +7,7 @@ import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
 import Forget from './components/auth/Forget'
 import JobPost from './components/jobs/JobPost'
-
+import Job_page from './components/shared/Job_page'
 const appRouter = createBrowserRouter([
   {
     path: '/',
@@ -29,6 +29,10 @@ const appRouter = createBrowserRouter([
     path: '/post-job',
     element: <JobPost />
   }
+
+    path: '/Job',
+    element: <Job_page />,
+  },
 ])
 
 function App() {
