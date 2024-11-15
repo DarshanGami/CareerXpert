@@ -6,7 +6,7 @@ import Home from './components/ui/Home'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
 import Forget from './components/auth/Forget'
-
+import Job_page from './components/shared/Job_page'
 const appRouter = createBrowserRouter([
   {
     path: '/',
@@ -23,6 +23,10 @@ const appRouter = createBrowserRouter([
   {
     path: '/forgotpassword',
     element: <Forget />,
+  },
+  {
+    path: '/Job',
+    element: <Job_page />,
   },
 ])
 
