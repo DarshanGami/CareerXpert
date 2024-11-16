@@ -1,25 +1,36 @@
 import React, { useState } from 'react';
 import Input from '../shared/Input';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const Signup = () => {
 
-  const [input, setInput] = useState({
-    Username: "",
-    Email: "",
-    Password: "",
-    role: "",
-  })
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [role, setRole] = useState('Job Seeker')
+  const [password, setPassword] = useState('')
+
+  const navigate = useNavigate()
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value })
   }
-
-
   //  fetch api
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(input)
+    try{
+      const response = await axios.post("http://localhost:5001/api/v1/user/register", {
+        username, email, password, role
+    })
+      toast.success(response.data.message)
+      console.log(response)
+      navigate('/login')
+    } catch(err){
+      toast.error(err.response.data.message || 'Registration failed');
+    }
+    
   }
 
   return (
@@ -39,27 +50,27 @@ const Signup = () => {
           <div className='my-4'>
             <Input lablename="Username"
               type="text"
-              value={input.Username}
+              value={username}
               name="Username"
-              onChange={changeEventHandler}
+              onChange={(e)=>setUsername(e.target.value)}
             />
           </div>
 
           <div className='my-4'>
             <Input lablename="Email"
               type="email"
-              value={input.Email}
+              value={email}
               name="Email"
-              onChange={changeEventHandler}
+              onChange={(e)=>setEmail(e.target.value)}
             />
           </div>
 
           <div className='my-4'>
             <Input lablename="Password"
               type="password"
-              value={input.Password}
+              value={password}
               name="Password"
-              onChange={changeEventHandler} />
+              onChange={(e)=>setPassword(e.target.value)} />
           </div>
 
           {/* Radio buttons for account type selection */}
@@ -71,8 +82,8 @@ const Signup = () => {
                   type="radio"
                   name="role"
                   value="Job Seeker"
-                  checked={input.role === 'Job Seeker'}
-                  onChange={changeEventHandler}
+                  checked={role === 'Job Seeker'}
+                  onChange={(e)=>setRole(e.target.value)}
                   className="mr-2 cursor-pointer"
                 />
                 Job Seeker
@@ -82,8 +93,8 @@ const Signup = () => {
                   type="radio"
                   name="role"
                   value="Recruiter"
-                  checked={input.role === 'Recruiter'}
-                  onChange={changeEventHandler}
+                  checked={role === 'Recruiter'}
+                  onChange={(e)=>setRole(e.target.value)}
                   className="mr-2 cursor-pointer"
                 />
                 Recruiter

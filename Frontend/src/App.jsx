@@ -6,6 +6,13 @@ import Home from './components/ui/Home'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
 import Forget from './components/auth/Forget'
+import JobPost from './components/jobs/JobPost'
+import Job_pages from './components/shared/Job_page'
+import ResetPassword from './components/auth/ResetPassword'
+// import Profile from './components/auth/Profile'
+import { Toaster } from 'react-hot-toast'
+// import MyProfile from './components/user/MyProfile'
+// import UpdateProfile from './components/user/updateProfile'
 import Job_page from './components/shared/Job_page'
 import JobPost from './components/jobs/JobPost'
 import { Toaster } from 'react-hot-toast'
@@ -33,6 +40,25 @@ const appRouter = createBrowserRouter([
   },
   {
     path: '/post-job',
+    element: <JobPost />,
+  },
+  {
+    path: '/jobs',
+    element: <Job_pages />
+
+  },
+  {
+    path: '/reset-password/:token',
+    element: <ResetPassword />
+  }
+  // {
+  //   path: '/me',
+  //   element: <MyProfile />
+  // },
+  // {
+  //   path: 'update-profile',
+  //   element: <UpdateProfile />
+  // }
     element: <JobPost />
   },
 
