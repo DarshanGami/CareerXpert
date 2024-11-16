@@ -6,6 +6,13 @@ import { sendEmail } from '../utils/sendEmail.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs'; 
 import crypto from 'crypto';
+import  {v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const signToken = (id) => {
     // create token
@@ -147,6 +154,7 @@ export const login = catchAsync(async (req, res, next) => {
 export const logout = catchAsync(async (req, res, next) => {
 
     // clear cookie by expiring it at current time
+    console.log("Logout request received:", req.headers);
 
     res.status(200)
         .cookie('token', '', {
@@ -203,3 +211,84 @@ export const resetPassword = catchAsync(async (req, res, next) => {
 
     createSendToken(user, 200, res, 'Password reset successfull.');
 });
+
+export const getMe = catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+        return next(new AppError('No user found with that ID', 404));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            user
+        }
+    });
+});
+
+
+export const updateProfile = catchAsync(async (req, res, next) => {
+    if (req.body.password || req.body.passwordConfirm) {
+        return next(new AppError('This route is not for password updates. Please use /updatePassword', 400));
+    }
+
+    const updateData = { ...req.body };
+
+    // Remove sensitive fields from update data
+    const sensitiveFields = ['password', 'email', 'role', 'isVerified', 'verificationToken', 'passwordChangedAt', 'passwordResetToken', 'passwordResetExpires'];
+
+    sensitiveFields.forEach(field => delete updateData[field]);
+
+    //handle profile photo upload
+    if(req.files && req.files.profilePhoto) {
+        const result = await cloudinary.uploader.upload(req.files.profilePhoto.tempFilePath, {
+            folder: 'profile-photos',
+            width: 150,
+            height: 150,
+            crop: 'fill',
+        });
+        
+        if(!result || result.error) {
+            return next(new AppError('Error uploading profile photo', 400));
+        };
+
+        updateData.profilePhoto = {
+            id: result.public_id,
+            url: result.secure_url,
+        };
+    }
+
+    //handle resume upload
+    if(req.files && req.files.resume) {
+        const result = await cloudinary.uploader.upload(req.files.resume.tempFilePath, {
+            folder: 'resumes',
+        });
+
+        if(!result || result.error) {
+            return next(new AppError('Error uploading resume', 400));
+        }
+
+        updateData.resume = {
+            id: result.public_id,
+            url: result.secure_url,
+        };
+    }
+
+    // Update user document
+    const user = await User.findByIdAndUpdate(req.user._id, updateData, {
+        new: true,
+        runValidators: true,
+    });
+
+    if (!user) {
+        return next(new AppError('User not found', 404));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Profile updated successfully',
+        user,
+    });
+});
+
