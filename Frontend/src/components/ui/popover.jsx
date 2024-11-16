@@ -18,7 +18,7 @@ function AvatarDropdown({ userName = "Bonnie Green", userEmail = "name@flowbite.
       >
 
         <img
-          className="w-9 h-9 rounded-full"
+          className="object-cover w-9 h-9 rounded-full"
           src={userImage}
           alt="user avatar"
         />
@@ -30,7 +30,7 @@ function AvatarDropdown({ userName = "Bonnie Green", userEmail = "name@flowbite.
 
           <div className="img flex justify-center px-2 py-2">
             <img
-              className="w-11 h-11 rounded-full border-2 border-blue-500"
+              className="object-cover w-11 h-11 rounded-full border-2 border-blue-500"
               src={userImage}
               alt="user avatar"
             />

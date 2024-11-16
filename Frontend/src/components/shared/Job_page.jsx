@@ -49,8 +49,8 @@ const Job_pages = () => {
                 title="FullStack Developer"
                 description="We need a senior Fullstack developer, who can write efficient code and work with frontend and backend."
                 positions="2"
-                type="Full Time"
-                salary="45 LPA"
+                role="Full Time"
+                salaryRange="45 LPA"
               />
               <Jobcard
                 company="Microsoft"
@@ -58,8 +58,8 @@ const Job_pages = () => {
                 title="Frontend Developer"
                 description="Looking for a frontend developer who can create professional UI web pages."
                 positions="3"
-                type="Part Time"
-                salary="20 LPA"
+                role="Part Time"
+                salaryRange="20 LPA"
               />
               <Jobcard
                 company="Amazon"
@@ -67,8 +67,8 @@ const Job_pages = () => {
                 title="Backend Developer"
                 description="Seeking a backend developer proficient in database management and server-side logic."
                 positions="1"
-                type="Full Time"
-                salary="30 LPA"
+                role="Full Time"
+                salaryRange="30 LPA"
               />
               <Jobcard
                 company="Apple"
@@ -76,8 +76,8 @@ const Job_pages = () => {
                 title="iOS Developer"
                 description="Hiring an iOS developer with experience in Swift and iOS frameworks."
                 positions="2"
-                type="Full Time"
-                salary="35 LPA"
+                role="Full Time"
+                salaryRange="35 LPA"
               />
               <Jobcard
                 company="Facebook"
@@ -85,8 +85,8 @@ const Job_pages = () => {
                 title="Data Scientist"
                 description="Looking for a data scientist with expertise in data analysis and machine learning."
                 positions="4"
-                type="Full Time"
-                salary="50 LPA"
+                role="Full Time"
+                salaryRange="50 LPA"
               />
               <Jobcard
                 company="Netflix"
@@ -94,8 +94,8 @@ const Job_pages = () => {
                 title="UI/UX Designer"
                 description="We need a UI/UX designer who can create user-friendly and visually appealing designs."
                 positions="1"
-                type="Contract"
-                salary="25 LPA"
+                role="Contract"
+                salaryRange="25 LPA"
               />
             </div>
           </div>

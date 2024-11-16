@@ -14,8 +14,8 @@ const Jobcard = (props) => {
       <p className="text-sm text-gray-600 mb-4">{props.description}</p>
       <div className="flex items-center space-x-3 mb-4 text-sm">
         <span className="bg-blue-100 text-blue-700 py-1 px-3 rounded-full">{props.positions} positions</span>
-        <span className="bg-purple-100 text-purple-700 py-1 px-3 rounded-full">{props.type}</span>
-        <span className="bg-green-100 text-green-700 py-1 px-3 rounded-full">{props.salary}</span>
+        <span className="bg-purple-100 text-purple-700 py-1 px-3 rounded-full">{props.role}</span>
+        <span className="bg-green-100 text-green-700 py-1 px-3 rounded-full">{props.salaryRange}</span>
       </div>
       <div className="flex justify-between items-center">
         <button className="text-blue-600 hover:underline font-medium">Details</button>
