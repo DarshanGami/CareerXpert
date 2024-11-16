@@ -21,9 +21,9 @@ const Footer = () => {
 
                 {/* Social Media Icons */}
                 <div className="flex justify-center space-x-6 mt-8">
-                    <Link to ="https://www.linkedin.com/in/vivek-vaghela-972679319/"><img src={likdin} alt="LinkedIn" className="w-6 h-6 hover:opacity-70" /></Link>
-                    <Link to="#"><img src={github} alt="GitHub" className="w-6 h-6 hover:opacity-70" /></Link>
-                    <Link to="#"><img src={twitter} alt="twitter" className="w-6 h-6 hover:opacity-70" /></Link>
+                <Link to ="https://www.linkedin.com/in/vivek-vaghela-972679319/"><img src={likdin} alt="LinkedIn" className="w-10 h-10 hover:opacity-70" /></Link>
+                    <Link to="#"><img src={github} alt="GitHub" className="w-10 h-10 hover:opacity-70" /></Link>
+                    <Link to="#"><img src={twitter} alt="twitter" className="w-10 h-10 hover:opacity-70" /></Link>
                 </div>
 
                 {/* Footer Bottom */}

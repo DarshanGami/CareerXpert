@@ -9,6 +9,15 @@ import Gotobtm from './Gotobtm';
 import images from './images.png';
 import Fillter from './Fillter';
 import Post_job from './Post_job';
+import { Link } from 'react-router-dom';
+import apple from './apple.jpg';
+import dell from './dell.jpg';
+import deloitee from './deloitee.jpg';
+import samsung from './samsung.jpg';
+import deshaw from './deshaw.jpg';
+import fastract from './fastract.jpg';
+import amazon from './amazon.jpg';
+import sprikler from './sprinklr.jpg'
 
 const Home_main = () => {
 
@@ -41,17 +50,17 @@ const Home_main = () => {
                             Unlock your potential with the world's top employers.
                         </p>
                     </div>
-                    <div className="flex  gap-2 justify-center">
-                        <img src={google} alt="Asian Paints" className="w-20 h-10" />
-                        <img src={google} alt="Aditya Birla Group" className="w-20 h-10" />
-                        <img src={images} alt="Wipro" className="w-10 h-10" />
-                        <img src={google} alt="Wipro" className="w-20 h-10" />
-                        <img src={google} alt="Wipro" className="w-20 h-10" />
-                        <img src={images} alt="Wipro" className="w-10 h-10" />
-                        <img src={google} alt="Wipro" className="w-20 h-10" />
-                        <img src={google} alt="Wipro" className="w-20 h-10" />
-                        <img src={images} alt="Wipro" className="w-10 h-10" />
-                        <img src={google} alt="Wipro" className="w-20 h-10" />
+                    <div className="flex  gap-8 justify-center">
+                    <img src={google} alt="Asian Paints" className="w-50 h-20" />
+                        <img src={amazon} alt="Aditya Birla Group" className="w-50 h-20" />
+                        <img src={images} alt="Wipro" className="w-50 h-20" />
+                        <img src={apple} alt="Wipro" className="w-50 h-20" />
+                        <img src={dell} alt="Wipro" className="w-50 h-20" />
+                        <img src={deloitee} alt="Wipro" className="w-50 h-20" />
+                        <img src={samsung} alt="Wipro" className="w-50 h-20" />
+                        <img src={sprikler} alt="Wipro" className="w50 h-20" />
+                        <img src={deshaw} alt="Wipro" className="w-50 h-20" />
+                        <img src={fastract} alt="Wipro" className="w-50 h-20" />
                        
                     </div>
                 </div>

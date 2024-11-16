@@ -6,8 +6,10 @@ import Home from './components/ui/Home'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
 import Forget from './components/auth/Forget'
-import JobPost from './components/jobs/JobPost'
 import Job_page from './components/shared/Job_page'
+import JobPost from './components/jobs/JobPost'
+import { Toaster } from 'react-hot-toast'
+
 const appRouter = createBrowserRouter([
   {
     path: '/',
@@ -28,9 +30,10 @@ const appRouter = createBrowserRouter([
   {
     path: '/post-job',
     element: <JobPost />
-  }
+  },
 
-    path: '/Job',
+  {
+    path: '/jobs',
     element: <Job_page />,
   },
 ])
