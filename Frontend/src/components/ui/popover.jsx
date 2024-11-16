@@ -46,14 +46,26 @@ function AvatarDropdown({
         type="button"
       >
         <img
-          className="w-9 h-9 rounded-full"
+          className="object-cover w-9 h-9 rounded-full"
           src={userImage}
           alt="user avatar"
         />
       </button>
 
       {isOpen && (
+
         <div className="absolute top-10 right-0.5 z-10 border-2 border-blue-600 bg-white divide-y divide-gray-100 rounded-lg shadow size:w-80 w-44 dark:bg-gray-700 dark:divide-blue-600">
+        <div className="absolute top-10 right-0.5 z-10 border-2 border-blue-600 bg-white divide-y divide-gray-100 rounded-lg shadow   size:w-80 w-44 dark:bg-gray-700 dark:divide-blue-600">
+
+
+          <div className="img flex justify-center px-2 py-2">
+            <img
+              className="object-cover w-11 h-11 rounded-full border-2 border-blue-500"
+              src={userImage}
+              alt="user avatar"
+            />
+          </div>
+
           <div className="px-4 py-3 text-base text-white">
             <div className="font-medium truncate">{userEmail}</div>
           </div>

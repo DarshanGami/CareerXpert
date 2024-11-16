@@ -4,7 +4,10 @@ import Home_main from '../shared/Home_main'
 
 const Home = () => {
   return (
-    <div><Navbar /> <Home_main /></div>
+    <div>
+      <Navbar /> 
+      <Home_main />
+      </div>
   )
 }
 

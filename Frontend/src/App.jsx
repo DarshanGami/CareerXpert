@@ -13,6 +13,13 @@ import ResetPassword from './components/auth/ResetPassword'
 import { Toaster } from 'react-hot-toast'
 // import MyProfile from './components/user/MyProfile'
 // import UpdateProfile from './components/user/updateProfile'
+import Job_page from './components/shared/Job_page'
+import JobPost from './components/jobs/JobPost'
+import { Toaster } from 'react-hot-toast'
+import CompanyList from './components/shared/CompanyList'
+import JobList from './components/shared/JobList'
+import ResumeTable from './components/shared/MyCompany3'
+
 
 const appRouter = createBrowserRouter([
   {
@@ -52,6 +59,29 @@ const appRouter = createBrowserRouter([
   //   path: 'update-profile',
   //   element: <UpdateProfile />
   // }
+    element: <JobPost />
+  },
+
+  {
+    path: '/jobs',
+    element: <Job_page />,
+  },
+
+  {
+    path: '/companylist',
+    element: <CompanyList />,
+  },
+
+  {
+    path: '/joblist',
+    element: <JobList />,
+  },
+
+  {
+    path: '/userdetails',
+    element: <ResumeTable />,
+  },
+  
 ])
 
 function App() {

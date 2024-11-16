@@ -2,6 +2,9 @@ import React from 'react';
 import AvatarDropdown from '../ui/popover';
 import { Link } from 'react-router-dom';
 import google from './google.png'
+import google from './google.png';
+import AvatarDropdown from '../ui/popover';
+import { Link } from 'react-router-dom';
 
 const User = (props) => {
   return (
@@ -33,6 +36,7 @@ const User = (props) => {
 
               {/* Conditional Link Based on Role */}
               {props.role==='Job Seeker' ? (
+              {props.role ? (
                 <li className="relative group pb-1">
                   <Link to="/jobapply">
                     <span>MyApplication</span>
@@ -54,6 +58,7 @@ const User = (props) => {
               className="cursor-pointer"
               userName="Marmik Vasava"
               userEmail={props.email}
+              userEmail="marmikvasava051404@gmail.com"
               userImage={google}
             />
           </div>
@@ -63,4 +68,6 @@ const User = (props) => {
   );
 };
 
+
 export default User;
+
