@@ -63,13 +63,14 @@ const CompanyList = () => {
 
                                         {/* Edit and Delete Buttons */}
                                         <div className="flex space-x-2">
-
+                                             <Link to="/editcompanyprofile">
                                             <button
                                                 onClick={() => handleEdit(company.id)}
                                                 className="bg-yellow-500 text-white px-4 py-2 rounded"
-                                            >
+                                                >
                                                 Edit
                                             </button>
+                                                </Link>
 
                                             <button
                                                 onClick={() => handleDelete(company.id)}
