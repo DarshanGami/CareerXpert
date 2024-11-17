@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import './App.css'
-import Navbar from './components/shared/Navbar'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './components/ui/Home'
 import Login from './components/auth/Login'
@@ -13,12 +12,10 @@ import ResetPassword from './components/auth/ResetPassword'
 import { Toaster } from 'react-hot-toast'
 // import MyProfile from './components/user/MyProfile'
 // import UpdateProfile from './components/user/updateProfile'
-import Job_page from './components/shared/Job_page'
-import JobPost from './components/jobs/JobPost'
-import { Toaster } from 'react-hot-toast'
 import CompanyList from './components/shared/CompanyList'
 import JobList from './components/shared/JobList'
 import ResumeTable from './components/shared/MyCompany3'
+import Profile_user from './components/shared/Profile_user'
 
 
 const appRouter = createBrowserRouter([
@@ -50,7 +47,7 @@ const appRouter = createBrowserRouter([
   {
     path: '/reset-password/:token',
     element: <ResetPassword />
-  }
+  },
   // {
   //   path: '/me',
   //   element: <MyProfile />
@@ -59,13 +56,7 @@ const appRouter = createBrowserRouter([
   //   path: 'update-profile',
   //   element: <UpdateProfile />
   // }
-    element: <JobPost />
-  },
 
-  {
-    path: '/jobs',
-    element: <Job_page />,
-  },
 
   {
     path: '/companylist',
@@ -81,7 +72,12 @@ const appRouter = createBrowserRouter([
     path: '/userdetails',
     element: <ResumeTable />,
   },
-  
+
+  {
+    path: '/profileuser',
+    element: <Profile_user />
+  },
+
 ])
 
 function App() {

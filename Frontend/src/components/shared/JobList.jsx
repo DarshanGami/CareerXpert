@@ -11,6 +11,10 @@ const JobList = () => {
     navigate('/userdetails'); // Navigate to the /userdetails route
   };
 
+  const routetopostjob = () => {
+    navigate('/post-job');
+  };
+
   // Sample data for jobs
   const jobs = [
     { role: 'FullStack Developer', date: '2024-07-18', seats: 5, location: 'Bangalore' },
@@ -20,7 +24,7 @@ const JobList = () => {
 
   return (
     <>
-       <Navbar></Navbar>
+      <Navbar></Navbar>
       {/* Hero Section */}
       <div className="bg-white py-12 text-center">
         <div className="container mx-auto">
@@ -44,9 +48,9 @@ const JobList = () => {
       {/* Post Job Button */}
       <div className="flex justify-center my-8">
         <Link to="/post-job">
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-400 focus:ring-opacity-50">
-          Post Job
-        </button>
+          <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-400 focus:ring-opacity-50">
+            Post Job
+          </button>
         </Link>
       </div>
 
@@ -84,7 +88,15 @@ const JobList = () => {
                 <td className="px-20 py-4 whitespace-nowrap text-sm text-gray-900">{job.location}</td>
                 <td className="px-20 py-4 whitespace-nowrap text-sm text-gray-900">{job.date}</td>
                 <td className="px-20 py-4 whitespace-nowrap text-sm flex space-x-3">
-                  <button className="text-blue-600 hover:text-blue-800 px-6 py-4">Edit</button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent parent click event
+                      routetopostjob(); // Navigate to post-job
+                    }}
+                    className="text-blue-600 hover:text-blue-800 px-6 py-4"
+                  >
+                    Edit
+                  </button>
                   <button className="text-red-600 hover:text-red-800 px-6 py-4">Delete</button>
                 </td>
               </tr>
