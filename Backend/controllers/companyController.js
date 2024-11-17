@@ -7,7 +7,7 @@ export const registerCompany = catchAsync(async (req, res, next)=>{
     
     try{
         const { name, about } = req.body
-
+        // console.log(req.body);
         // Check if required fields are provided
         if(!name || !about){
             return next(new AppError('Empty required field', 400))
@@ -15,7 +15,8 @@ export const registerCompany = catchAsync(async (req, res, next)=>{
 
         const company = new Company({
             ...req.body,
-            registeredBy: req.user._id,
+            registeredBy:req.user?._id || null,
+
         })
 
         // Save the new company to the database
@@ -71,7 +72,7 @@ export const getCompanyById = catchAsync(async (req, res, next)=>{
 export const getMyCompanies = catchAsync(async (req, res, next)=>{
 
     // Find companies by user ID
-    const companies = await Company.find({ registeredBy: req.user._id })
+    const companies = await Company.find({ registeredBy: req.user ?._id || null })
     
     res.status(200).json({
         status: 'success',
@@ -93,7 +94,7 @@ export const updateCompany = catchAsync(async (req, res, next)=>{
     const updatedCompany = await Company.findOneAndUpdate(
 
         // Check if company belongs to user
-        { _id: req.params.id, registeredBy: req.user._id }, 
+        { _id: req.params.id, registeredBy: req.user ?._id || null }, 
         req.body,                                        
         { new: true, runValidators: true }   
 
@@ -124,7 +125,7 @@ export const deleteCompany = catchAsync(async (req, res, next)=>{
 
     const deleteCompany = await Company.findOneAndDelete({ 
         _id: req.params.id, 
-        registeredBy: req.user._id 
+        registeredBy: req.user ?._id || null
     });
     
     // Ensure user owns the company

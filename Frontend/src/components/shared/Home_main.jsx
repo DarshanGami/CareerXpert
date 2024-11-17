@@ -19,7 +19,7 @@ import fastract from './fastract.jpg';
 import amazon from './amazon.jpg';
 import sprikler from './sprinklr.jpg'
 
-const Home_main = () => {
+const Home_main = (props) => {
 
     return (
         <div className=" min-h-screen flex flex-col">
@@ -64,7 +64,7 @@ const Home_main = () => {
                        
                     </div>
                 </div>
-                <Post_job />
+                <Post_job setcompanyData={props.setcompanyData}/>
 
                 <div className="flex flex-row justify-center mt-16 mb-8 items-start">
                     <div className="flex px-12 gap-4">

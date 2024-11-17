@@ -16,3 +16,4 @@ jobRouter1.put('/:id', isAuthenticated, isAuthorized('Recruiter'), updateJob);
 jobRouter1.delete('/:id', isAuthenticated, isAuthorized('Recruiter'), deleteJob);
 
 export default jobRouter1;
+

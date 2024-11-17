@@ -1,7 +1,7 @@
 // GoToTopButton.js
 import React from 'react';
 
-const Backtop = () => {
+const  Backtop = () => {
   const handleScrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };

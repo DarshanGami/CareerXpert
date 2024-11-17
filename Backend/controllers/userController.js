@@ -45,7 +45,7 @@ const createSendToken = (user, statusCode, res, message) => {
 export const register = catchAsync(async (req, res, next) => {
     try {
         const { username, email, password, role } = req.body;
-
+    
         // check if required fields are empty
         if (!username || !email || !password || !role) {
             return next(new AppError('Empty required field.', 400));

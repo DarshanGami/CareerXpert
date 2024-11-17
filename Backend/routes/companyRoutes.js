@@ -8,11 +8,15 @@ import { addReview, getReviews } from '../controllers/reviewController.js'
 const companyRouter = express.Router()
 
 // Define routes
-companyRouter.post('/register', isAuthenticated, isAuthorized('Recruiter'), registerCompany)
-companyRouter.put('/update/:id', isAuthenticated, isAuthorized('Recruiter'), updateCompany)
-companyRouter.delete('/delete/:id', isAuthenticated, isAuthorized('Recruiter'), deleteCompany)
+// companyRouter.post('/register', isAuthenticated, isAuthorized('Recruiter'), registerCompany)
+companyRouter.post('/register', registerCompany)
+// companyRouter.put('/update/:id', isAuthenticated, isAuthorized('Recruiter'), updateCompany)
+companyRouter.put('/update/:id', updateCompany)
+// companyRouter.delete('/delete/:id', isAuthenticated, isAuthorized('Recruiter'), deleteCompany)
+companyRouter.delete('/delete/:id', deleteCompany)
 
-companyRouter.get('/my-companies', isAuthenticated, isAuthorized('Recruiter'), getMyCompanies)
+// companyRouter.get('/my-companies', isAuthenticated, isAuthorized('Recruiter'), getMyCompanies)
+companyRouter.get('/my-companies', getMyCompanies)
 companyRouter.get('/', getAllCompanies)
 companyRouter.get('/:id', getCompanyById)
 

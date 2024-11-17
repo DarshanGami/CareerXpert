@@ -1,8 +1,10 @@
 // PostJobComponent.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Post_job = () => {
+const Post_job = (props) => {
+
+    const navigate = useNavigate();
     return (
         <div className="flex justify-between items-center p-6 border rounded-lg shadow-lg w-full max-w-3xl mx-auto bg-white">
             <div className="flex-1">
@@ -21,11 +23,23 @@ const Post_job = () => {
                 </p>
             </div>
             <div className="ml-6">
-                <Link to="/editcompanyprofile">
-                <button className="px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700">
+                {/* <Link to="/editcompanyprofile" state={{}}> */}
+                <button className="px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700"
+                onClick={() => { props.setcompanyData({name: "",
+                    logo: "",
+                    about: "",
+                    website: "",
+                    employees: "",
+                    branches: "",
+                    social: {
+                      linkedin: "",
+                      facebook: "",
+                      twitter: "",
+                      instagram: "",
+                    },}),navigate('/editcompanyprofile')}}>
                     Host Now
                 </button>
-                </Link>
+                {/* </Link> */}
             </div>
         </div>
     );

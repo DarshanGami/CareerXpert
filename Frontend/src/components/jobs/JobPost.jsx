@@ -38,12 +38,15 @@
             }));
         };
 
+
+        const userId = localStorage.getItem('_id');
+        
         const handleSubmit = async (e) => {
             e.preventDefault();
             setIsSubmitting(true);
 
             try {
-                const response = await axios.post('http://localhost:5001/api/v1/jobs', jobDetails, {
+                const response = await axios.post('http://localhost:5001/api/v1/job/${userId}', jobDetails, {
                     withCredentials: true
                 });
                 toast.success('Job posted successfully!');
