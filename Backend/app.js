@@ -8,6 +8,7 @@ import jobRouter1 from './routes/jobRoutes1.js';
 import jobRouter2 from './routes/jobRoutes2.js';
 import companyRouter from './routes/companyRoutes.js';
 import reviewRouter from './routes/reviewRoutes.js';
+import applicationRouter from './routes/applicationRoutes.js';
 
 const app = express();
 
@@ -32,6 +33,8 @@ app.use('/api/v1/job', jobRouter1);
 app.use('/api/v1/jobs', jobRouter2);
 
 app.use('/api/v1/company', companyRouter);
+
+app.use('/api/v1/application', applicationRouter)
 connection();
 app.use(errorHandler);
 
