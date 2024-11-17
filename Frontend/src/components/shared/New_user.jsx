@@ -9,7 +9,7 @@ const New_user = () => {
 <div className='bg-white sticky z-10 top-0 my-2'>
         <div className='flex items-center justify-between mx-auto max-w-7xl size_1:flex-row gap-5 flex-col h-16'>
           <div>
-            <h1 className='text-2xl font-bold'>ᴄᴀʀᴇᴇʀ<span className='text-blue-600'>xᴘᴇʀᴛ</span></h1>
+            <h1 className='text-2xl font-bold'>Carrer<span className='text-blue-600'>Xpert</span></h1>
           </div>
           <div className='flex justify-center gap-5 items-center'>
             <ul className='flex  cursor-pointer font-medium items-center gap-5'>

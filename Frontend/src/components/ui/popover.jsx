@@ -3,7 +3,7 @@ import { LogOut } from 'lucide-react';
 import { UserRound } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {toast} from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 function AvatarDropdown({
   userName = "Bonnie Green",
@@ -55,7 +55,6 @@ function AvatarDropdown({
       {isOpen && (
 
         <div className="absolute top-10 right-0.5 z-10 border-2 border-blue-600 bg-white divide-y divide-gray-100 rounded-lg shadow size:w-80 w-44 dark:bg-gray-700 dark:divide-blue-600">
-        <div className="absolute top-10 right-0.5 z-10 border-2 border-blue-600 bg-white divide-y divide-gray-100 rounded-lg shadow   size:w-80 w-44 dark:bg-gray-700 dark:divide-blue-600">
 
 
           <div className="img flex justify-center px-2 py-2">
@@ -71,10 +70,12 @@ function AvatarDropdown({
           </div>
           <ul className="py-2 text-sm text-white">
             <li>
-              <div className="flex items-center px-4 py-2 dark:hover:bg-blue-600 dark:hover:text-white rounded-lg gap-4 text-base">
+            <Link to="/profileuser">
+              <div className='flex items-center px-4 py-2  dark:hover:bg-blue-600  dark:hover:text-white rounded-lg gap-4 text-base'>
                 <UserRound />
-                <a href="#" className="block">View Profile</a>
+                View Profile
               </div>
+               </Link>
             </li>
           </ul>
           <div className="py-2 text-white">
