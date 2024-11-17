@@ -292,3 +292,27 @@ export const updateProfile = catchAsync(async (req, res, next) => {
     });
 });
 
+export const deleteUserbyId = async(req, res) => {
+    
+    console.log(req.params);
+
+    try {
+        // Destructure the 'id' parameter from the request
+        const { id } = req.params;
+       
+        console.log(id);
+
+        // Attempt to delete the user from the database using their ID
+        await User.deleteOne({ _id: id });
+
+        // Send a success response if the user is deleted
+        return res.status(200).json({ message: "User deleted successfully" });
+
+    } catch (error) {
+
+        // Send an error response if an exception occurs
+        return res.status(404).json({ message: "Error" });
+        
+    }
+};
+

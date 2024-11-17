@@ -1,5 +1,6 @@
 // PostJobComponent.jsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Post_job = () => {
     return (
@@ -20,9 +21,11 @@ const Post_job = () => {
                 </p>
             </div>
             <div className="ml-6">
+                <Link to="/editcompanyprofile">
                 <button className="px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700">
                     Host Now
                 </button>
+                </Link>
             </div>
         </div>
     );

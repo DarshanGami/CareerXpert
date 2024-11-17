@@ -16,6 +16,7 @@ import CompanyList from './components/shared/CompanyList'
 import JobList from './components/shared/JobList'
 import ResumeTable from './components/shared/MyCompany3'
 import Profile_user from './components/shared/Profile_user'
+import EditCompanyForm from './components/shared/EditCompanyForm'
 
 
 const appRouter = createBrowserRouter([
@@ -76,6 +77,10 @@ const appRouter = createBrowserRouter([
   {
     path: '/profileuser',
     element: <Profile_user />
+  },
+  {
+    path: '/editcompanyprofile',
+    element: <EditCompanyForm />
   },
 
 ])

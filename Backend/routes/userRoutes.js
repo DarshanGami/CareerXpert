@@ -1,6 +1,7 @@
 import express from 'express'
 import { register, login, verifyEmail, logout, forgotPassword, resetPassword, updateProfile, getMe } from "../controllers/userController.js";
 import { isAuthenticated } from '../middlewares/auth.js';
+import { deleteUserbyId } from '../controllers/userController.js';
 
 // Create a new router
 const userRouter = express.Router();
@@ -15,5 +16,6 @@ userRouter.post('/forgot-password', forgotPassword);
 userRouter.post('/reset-password/:token', resetPassword);
 userRouter.get('/me', isAuthenticated, getMe)
 userRouter.patch('/update-profile', isAuthenticated, updateProfile);
+userRouter.delete('/delete/:id', isAuthenticated, deleteUserbyId);
 
 export default userRouter;
