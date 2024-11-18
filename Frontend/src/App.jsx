@@ -17,6 +17,8 @@ import JobList from './components/shared/JobList';
 import ResumeTable from './components/shared/MyCompany3';
 import Profile_user from './components/shared/Profile_user';
 import EditCompanyForm from './components/shared/EditCompanyForm';
+import Job_Apply from './components/shared/Job_Apply';
+import JobDcard from './components/shared/JobDcard';
 
 function App() {
   const [companyData, setcompanyData] = useState({});
@@ -79,6 +81,14 @@ function App() {
     {
       path: '/editcompanyprofile',
       element: <EditCompanyForm companyData={companyData} />,
+    },
+    {
+      path: '/jobapply',
+      element: <Job_Apply/>,
+    },
+    {
+      path: '/jobdcard',
+      element: <JobDcard/>,
     },
   ]);
 
