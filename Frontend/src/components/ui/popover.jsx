@@ -55,7 +55,7 @@ function AvatarDropdown({
 
       {isOpen && (
 
-        <div className="absolute top-10 right-0.5 z-10 border-2 border-blue-600 bg-white divide-y divide-gray-100 rounded-lg shadow size:w-80 w-44 dark:bg-gray-700 dark:divide-blue-600">
+        <div className="absolute top-10 right-0.5 z-10 border-2 border-blue-600 bg-gray-700 divide-y divide-gray-100 rounded-lg shadow size:w-80 w-44 dark:bg-gray-700 dark:divide-blue-600">
 
 
           <div className="img flex justify-center px-2 py-2">

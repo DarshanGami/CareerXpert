@@ -37,7 +37,7 @@ const Home_main = (props) => {
                     </div>
                     <div className="flex flex-row gap-4 items-start">
                         <Card title="Company" description="Shape the future together" />
-                        <Card title="Jobs" description="Explore career opportunities" />
+                       <Link to = '/homejob'><Card title="Jobs" description="Explore career opportunities" /></Link> 
 
                     </div>
                 </div>
