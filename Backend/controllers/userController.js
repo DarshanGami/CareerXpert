@@ -6,13 +6,14 @@ import { sendEmail } from '../utils/sendEmail.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs'; 
 import crypto from 'crypto';
-import  {v2 as cloudinary } from 'cloudinary';
+// import  {v2 as cloudinary } from 'cloudinary';
+import cloudinary from '../utils/cloudinary.js';
 
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// cloudinary.config({
+//     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+//     api_key: process.env.CLOUDINARY_API_KEY,
+//     api_secret: process.env.CLOUDINARY_API_SECRET,
+// });
 
 const signToken = (id) => {
     // create token
@@ -45,7 +46,7 @@ const createSendToken = (user, statusCode, res, message) => {
 export const register = catchAsync(async (req, res, next) => {
     try {
         const { username, email, password, role } = req.body;
-    
+
         // check if required fields are empty
         if (!username || !email || !password || !role) {
             return next(new AppError('Empty required field.', 400));
@@ -229,50 +230,72 @@ export const getMe = catchAsync(async (req, res, next) => {
 
 
 export const updateProfile = catchAsync(async (req, res, next) => {
+    // Prevent password updates through this route
     if (req.body.password || req.body.passwordConfirm) {
-        return next(new AppError('This route is not for password updates. Please use /updatePassword', 400));
+        return next(
+            new AppError(
+                'This route is not for password updates. Please use /updatePassword',
+                400
+            )
+        );
     }
 
+    // Clone and sanitize update data
     const updateData = { ...req.body };
-
-    // Remove sensitive fields from update data
-    const sensitiveFields = ['password', 'email', 'role', 'isVerified', 'verificationToken', 'passwordChangedAt', 'passwordResetToken', 'passwordResetExpires'];
-
+    const sensitiveFields = [
+        'password',
+        'email',
+        'role',
+        'isVerified',
+        'verificationToken',
+        'passwordChangedAt',
+        'passwordResetToken',
+        'passwordResetExpires',
+    ];
     sensitiveFields.forEach(field => delete updateData[field]);
 
-    //handle profile photo upload
-    if(req.files && req.files.profilePhoto) {
-        const result = await cloudinary.uploader.upload(req.files.profilePhoto.tempFilePath, {
-            folder: 'profile-photos',
-            width: 150,
-            height: 150,
-            crop: 'fill',
-        });
-        
-        if(!result || result.error) {
-            return next(new AppError('Error uploading profile photo', 400));
-        };
+    // Handle file uploads with Cloudinary
+    try {
+        if (req.files?.profilePhoto) {
+            const profilePhoto = await cloudinary.uploader.upload(
+                req.files.profilePhoto.tempFilePath,
+                {
+                    folder: 'profile-photos',
+                    width: 150,
+                    height: 150,
+                    crop: 'fill',
+                }
+            );
 
-        updateData.profilePhoto = {
-            id: result.public_id,
-            url: result.secure_url,
-        };
-    }
-
-    //handle resume upload
-    if(req.files && req.files.resume) {
-        const result = await cloudinary.uploader.upload(req.files.resume.tempFilePath, {
-            folder: 'resumes',
-        });
-
-        if(!result || result.error) {
-            return next(new AppError('Error uploading resume', 400));
+            if (profilePhoto?.secure_url) {
+                updateData.profilePhoto = {
+                    id: profilePhoto.public_id,
+                    url: profilePhoto.secure_url,
+                };
+            } else {
+                throw new AppError('Error uploading profile photo', 400);
+            }
         }
 
-        updateData.resume = {
-            id: result.public_id,
-            url: result.secure_url,
-        };
+        if (req.files?.resume) {
+            const resume = await cloudinary.uploader.upload(
+                req.files.resume.tempFilePath,
+                {
+                    folder: 'resumes',
+                }
+            );
+
+            if (resume?.secure_url) {
+                updateData.resume = {
+                    id: resume.public_id,
+                    url: resume.secure_url,
+                };
+            } else {
+                throw new AppError('Error uploading resume', 400);
+            }
+        }
+    } catch (error) {
+        return next(new AppError(error.message || 'File upload failed', 500));
     }
 
     // Update user document
@@ -285,12 +308,14 @@ export const updateProfile = catchAsync(async (req, res, next) => {
         return next(new AppError('User not found', 404));
     }
 
+    // Respond with updated user data
     res.status(200).json({
         status: 'success',
         message: 'Profile updated successfully',
         user,
     });
 });
+
 
 export const deleteUserbyId = async(req, res) => {
     
@@ -315,4 +340,3 @@ export const deleteUserbyId = async(req, res) => {
         
     }
 };
-
