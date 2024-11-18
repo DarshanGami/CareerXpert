@@ -8,6 +8,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 // import  {v2 as cloudinary } from 'cloudinary';
 import cloudinary from '../utils/cloudinary.js';
+import { Job } from './../models/jobModel.js';
 
 // cloudinary.config({
 //     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -77,6 +78,7 @@ export const register = catchAsync(async (req, res, next) => {
             status: 'success', 
             message: 'Signup successful, check your email to verify your account.',
             user,
+            verificationToken,
         });
 
     } catch (err) {
@@ -340,3 +342,39 @@ export const deleteUserbyId = async(req, res) => {
         
     }
 };
+
+export const getJobRecommendations = catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+        return next(new AppError('User not found', 404));
+    }
+
+    const { skills, jobPreference, city } = user;
+
+    // Build the query object with proper validation
+    const query = {
+        $or: [
+            { requirements: { $in: Array.isArray(skills) ? skills : skills.split(',').map(skill => skill.trim()) } },
+            { category: { $in: [jobPreference.first, jobPreference.second, jobPreference.third].filter(Boolean) } },
+            { location: city }
+        ]
+    };
+
+    const jobs = await Job.find(query).limit(50); // Add a limit to avoid large responses
+
+    if (!jobs.length) {
+        return res.status(200).json({
+            status: 'success',
+            message: 'No jobs found matching your preferences',
+            results: 0,
+            jobs: [],
+        });
+    }
+
+    res.status(200).json({
+        status: 'success',
+        results: jobs.length,
+        jobs,
+    });
+});
