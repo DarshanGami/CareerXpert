@@ -19,7 +19,7 @@ import Profile_user from './components/shared/Profile_user';
 import EditCompanyForm from './components/shared/EditCompanyForm';
 import Job_Apply from './components/shared/Job_Apply';
 import JobDcard from './components/shared/JobDcard';
-// import Home_jobs from './components/shared/Home_jobs';
+import Home_jobs from './components/shared/Home_jobs';
 import CompanyD from './components/shared/CompanyD';
 import ApplyJobDcard from './components/shared/ApplyJobDcard';
 
@@ -94,10 +94,10 @@ function App() {
       element: <JobDcard/>,
     },
 
-    // {
-    //   path : '/homejob',
-    //        element  : <Home_jobs />
-    // },
+    {
+      path : '/homejob',
+           element  : <Home_jobs />
+    },
     
     {
            path : '/companydescription',
