@@ -1,11 +1,11 @@
-import { catchAsync } from "../middlewares/catchAsync.js";
-import AppError from "../middlewares/errorHandler.js";
-import { Job } from "../models/jobModel.js";
-import { Company } from "../models/companyModel.js";
-import mongoose from "mongoose";
+const { catchAsync } = require('../middlewares/catchAsync.js');
+const {AppError} = require("../middlewares/errorHandler.js");
+const { Job } = require("../models/jobModel.js");
+const { Company } = require("../models/companyModel.js");
+const mongoose = require("mongoose");
 
 // Create a new job
-export const createJob = catchAsync(async (req, res, next) => {
+const createJob = catchAsync(async (req, res, next) => {
   const {
     title,
     description,
@@ -83,7 +83,7 @@ export const createJob = catchAsync(async (req, res, next) => {
 });
 
 // Get all jobs
-export const getAllJobs = catchAsync(async (req, res, next) => {
+const getAllJobs = catchAsync(async (req, res, next) => {
   const queryObj = { ...req.query };
 
   // Fields to exclude from filtering
@@ -123,7 +123,9 @@ export const getAllJobs = catchAsync(async (req, res, next) => {
     if (skip >= numJobs) throw new Error("This page does not exist");
   }
 
-  const jobs = await query;
+  const jobs = await query.populate({
+    path: "company",
+  });
 
   res.status(200).json({
     status: "success",
@@ -132,9 +134,11 @@ export const getAllJobs = catchAsync(async (req, res, next) => {
   });
 });
 
+
+
 // Get job by ID
-export const getJobById = catchAsync(async (req, res, next) => {
-  const job = await Job.findById(req.params.id).populate("company", "name");
+const getJobById = catchAsync(async (req, res, next) => {
+  const job = await Job.findById(req.params.id).populate("company");
 
   if (!job) {
     return next(new AppError("Job not found", 404));
@@ -146,8 +150,10 @@ export const getJobById = catchAsync(async (req, res, next) => {
   });
 });
 
+
+
 // Get all jobs by a company
-export const getCompanyJobs = catchAsync(async (req, res, next) => {
+const getCompanyJobs = catchAsync(async (req, res, next) => {
   const jobs = await Job.find({ company: req.params.companyId }).populate(
     "company",
     "name"
@@ -161,7 +167,7 @@ export const getCompanyJobs = catchAsync(async (req, res, next) => {
 });
 
 // Update job
-export const updateJob = catchAsync(async (req, res, next) => {
+const updateJob = catchAsync(async (req, res, next) => {
   const job = await Job.findOneAndUpdate(
     { _id: req.params.id, created_by: req.user._id },
     req.body,
@@ -180,6 +186,8 @@ export const updateJob = catchAsync(async (req, res, next) => {
     );
   }
 
+
+
   res.status(200).json({
     status: "success",
     message: "Job updated successfully",
@@ -188,7 +196,7 @@ export const updateJob = catchAsync(async (req, res, next) => {
 });
 
 // Delete job
-export const deleteJob = catchAsync(async (req, res, next) => {
+const deleteJob = catchAsync(async (req, res, next) => {
   const job = await Job.findOneAndDelete({
     _id: req.params.id,
     created_by: req.user._id,
@@ -203,8 +211,19 @@ export const deleteJob = catchAsync(async (req, res, next) => {
     );
   }
 
+  
+
   res.status(204).json({
     status: "success",
     message: "Job deleted successfully",
   });
 });
+
+module.exports = {
+  createJob,
+  getAllJobs,
+  getJobById,
+  getCompanyJobs,
+  updateJob,
+  deleteJob,
+};

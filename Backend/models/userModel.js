@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import validator from "validator";
-import bcrypt from "bcryptjs";
+const mongoose = require("mongoose");
+const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
@@ -48,7 +48,8 @@ const userSchema = new mongoose.Schema(
     },
 
     phone: {
-      type: String,
+      type: Number,
+      match: [/^\+?[1-9]\d{1,14}$/, 'Please enter a valid mobile number'],
       // required: true,
     },
 
@@ -135,4 +136,4 @@ userSchema.pre("save", async function (next) {
 //     return await bcrypt.compare(candidatePassword, userPassword);
 // };
 
-export const User = mongoose.model("User", userSchema);
+module.exports.User = mongoose.model("User", userSchema);

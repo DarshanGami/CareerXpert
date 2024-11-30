@@ -1,15 +1,15 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
-export const connection = () => {
+exports.connection = () => {
     mongoose
         .connect(process.env.DATABASE, {
             dbName: 'CareerXpert',
         })
         .then(() => {
-            console.log('DB connection Successfull');
+            console.log('DB connection Successful');
         })
         .catch((err) => {
             console.log(process.env.DATABASE);

@@ -1,7 +1,7 @@
-import nodemailer from 'nodemailer'
-import dotenv from 'dotenv'
+const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
 
-dotenv.config()
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -10,9 +10,9 @@ const transporter = nodemailer.createTransport({
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
     },
-})
+});
 
-export const sendVerificationEmail = (email, token) => {
+exports.sendVerificationEmail = (email, token) => {
     const verificationUrl = `http://localhost:5001/api/v1/user/verify-email?token=${token}`;
     
     return transporter.sendMail({
@@ -24,8 +24,7 @@ export const sendVerificationEmail = (email, token) => {
     }); 
 };
 
-export const sendEmail = async (options) => {
-
+exports.sendEmail = async (options) => {
     // might need to change the email template later
     
     // setting up mail content 
@@ -40,14 +39,3 @@ export const sendEmail = async (options) => {
     // send mail with defined transport object
     await transporter.sendMail(mailOptions);
 };
-
-
-
-
-
-
-
-
-
-
-
