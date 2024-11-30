@@ -1,12 +1,12 @@
-import express from "express";
-import { isAuthenticated, isAuthorized } from "../middlewares/auth.js";
-import {
+const express = require("express");
+const { isAuthenticated, isAuthorized } = require("../middlewares/auth.js");
+const {
   applyForJob,
   getApplicationById,
   getJobApplications,
   getUserApplications,
   updateApplicationStatus,
-} from "../controllers/applicationController.js";
+} = require("../controllers/applicationController.js");
 
 const applicationRouter = express.Router();
 
@@ -42,4 +42,4 @@ applicationRouter.get(
   getApplicationById
 );
 
-export default applicationRouter;
+module.exports = applicationRouter;

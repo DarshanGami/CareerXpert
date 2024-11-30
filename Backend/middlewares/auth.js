@@ -1,9 +1,9 @@
-import { catchAsync } from "./catchAsync.js";
-import AppError from "./errorHandler.js";
-import jwt from "jsonwebtoken";
-import { User } from "../models/userModel.js";
+const { catchAsync } = require("./catchAsync.js");
+const AppError = require("./errorHandler.js");
+const jwt = require("jsonwebtoken");
+const { User } = require("../models/userModel.js");
 
-export const isAuthenticated = catchAsync(async (req, res, next) => {
+const isAuthenticated = catchAsync(async (req, res, next) => {
   let token;
 
   // 1) Check if token exists in Authorization header
@@ -34,7 +34,7 @@ export const isAuthenticated = catchAsync(async (req, res, next) => {
   next();
 });
 
-// export const isAuthenticated = catchAsync(async (req, res, next) => {
+// const isAuthenticated = catchAsync(async (req, res, next) => {
 //   // 1) Getting token and check if it's there
 //   const { token } = req.cookies;
 
@@ -52,7 +52,7 @@ export const isAuthenticated = catchAsync(async (req, res, next) => {
 //   next();
 // });
 
-export const isAuthorized = (...roles) => {
+const isAuthorized = (...roles) => {
   return (req, res, next) => {
     // check if logged in user is authorized to access the resource
     if (!roles.includes(req.user.role)) {
@@ -65,4 +65,9 @@ export const isAuthorized = (...roles) => {
     }
     next();
   };
+};
+
+module.exports = {
+  isAuthenticated,
+  isAuthorized,
 };

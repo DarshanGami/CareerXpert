@@ -1,11 +1,11 @@
-import express from "express";
-import { isAuthenticated, isAuthorized } from "../middlewares/auth.js";
-import {
+const express = require("express");
+const { isAuthenticated, isAuthorized } = require("../middlewares/auth.js");
+const {
   createJob,
   updateJob,
   deleteJob,
   getCompanyJobs,
-} from "../controllers/jobController.js";
+} = require("../controllers/jobController.js");
 
 const jobRouter1 = express.Router();
 
@@ -24,4 +24,4 @@ jobRouter1.delete(
   deleteJob
 );
 
-export default jobRouter1;
+module.exports = jobRouter1;

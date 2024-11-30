@@ -1,15 +1,15 @@
-import express from "express";
-import {
+const express = require("express");
+const {
   deleteCompany,
   getAllCompanies,
   getCompanyById,
   getMyCompanies,
   registerCompany,
   updateCompany,
-} from "../controllers/companyController.js";
-import { isAuthenticated, isAuthorized } from "../middlewares/auth.js";
-import { addReview, getReviews } from "../controllers/reviewController.js";
-// import jobRouter from './jobRoutes.js'
+} = require("../controllers/companyController.js");
+const { isAuthenticated, isAuthorized } = require("../middlewares/auth.js");
+const { addReview, getReviews } = require("../controllers/reviewController.js");
+// const jobRouter = require('./jobRoutes.js')
 
 // Create a new router
 const companyRouter = express.Router();
@@ -37,4 +37,4 @@ companyRouter.get("/:id/reviews", isAuthenticated, getReviews);
 
 // companyRouter.use('/:companyId/jobs', jobRouter)
 
-export default companyRouter;
+module.exports = companyRouter;

@@ -1,12 +1,12 @@
-import { populate } from "dotenv";
-import { catchAsync } from "../middlewares/catchAsync.js";
-import AppError from "../middlewares/errorHandler.js";
-import { Application } from "../models/applicationModel.js";
-import { Job } from "../models/jobModel.js";
-import { User } from "../models/userModel.js";
+const { populate } = require("dotenv");
+const { catchAsync } = require("../middlewares/catchAsync.js");
+const { AppError } = require("../middlewares/errorHandler.js");
+const { Application } = require("../models/applicationModel.js");
+const { Job } = require("../models/jobModel.js");
+const { User } = require("../models/userModel.js");
 
 // Apply for a job
-export const applyForJob = catchAsync(async (req, res, next) => {
+const applyForJob = catchAsync(async (req, res, next) => {
   const { jobId } = req.params;
   const { resume } = req.body;
   const applicantId = req.user._id;
@@ -32,7 +32,7 @@ export const applyForJob = catchAsync(async (req, res, next) => {
 });
 
 // Get all applications for a job
-export const getJobApplications = catchAsync(async (req, res, next) => {
+const getJobApplications = catchAsync(async (req, res, next) => {
   const { jobId } = req.params;
 
   const applications = await Application.find({ job: jobId }).populate(
@@ -47,7 +47,7 @@ export const getJobApplications = catchAsync(async (req, res, next) => {
 });
 
 // Get all applications by a user
-export const getUserApplications = catchAsync(async (req, res, next) => {
+const getUserApplications = catchAsync(async (req, res, next) => {
   const applicantId = req.user._id;
 
   const applications = await Application.find({
@@ -67,7 +67,7 @@ export const getUserApplications = catchAsync(async (req, res, next) => {
 });
 
 // Update application status
-export const updateApplicationStatus = catchAsync(async (req, res, next) => {
+const updateApplicationStatus = catchAsync(async (req, res, next) => {
   const { applicationId } = req.params;
   const { status, feedback } = req.body;
 
@@ -88,7 +88,7 @@ export const updateApplicationStatus = catchAsync(async (req, res, next) => {
 });
 
 // Get application by ID
-export const getApplicationById = catchAsync(async (req, res, next) => {
+const getApplicationById = catchAsync(async (req, res, next) => {
   const { applicationId } = req.params;
 
   const application = await Application.findById(applicationId).populate(
@@ -103,3 +103,11 @@ export const getApplicationById = catchAsync(async (req, res, next) => {
     application,
   });
 });
+
+module.exports = {
+  applyForJob,
+  getJobApplications,
+  getUserApplications,
+  updateApplicationStatus,
+  getApplicationById,
+};

@@ -1,9 +1,9 @@
-import AppError from "../middlewares/errorHandler.js";
-import { catchAsync } from "../middlewares/catchAsync.js";
-import { Review } from "../models/reviewModel.js";
-import { Company } from "../models/companyModel.js";
+const { AppError } = require("../middlewares/errorHandler.js");
+const { catchAsync } = require("../middlewares/catchAsync.js");
+const { Review } = require("../models/reviewModel.js");
+const { Company } = require("../models/companyModel.js");
 
-export const addReview = catchAsync(async (req, res, next) => {
+const addReview = catchAsync(async (req, res, next) => {
     const existingReview = await Review.findOne({
         company: req.params.companyId,
         user: req.user._id,
@@ -33,7 +33,7 @@ export const addReview = catchAsync(async (req, res, next) => {
     });
 });
 
-export const getReviews = catchAsync(async (req, res, next) => {
+const getReviews = catchAsync(async (req, res, next) => {
     const reviews = await Review.find({ company: req.params.companyId })
         .populate('user', 'username')
         .populate('company', 'name');
@@ -44,7 +44,7 @@ export const getReviews = catchAsync(async (req, res, next) => {
     });
 });
 
-export const deleteReview = catchAsync(async (req, res, next) => {
+const deleteReview = catchAsync(async (req, res, next) => {
     const review = await Review.findById(req.params.reviewId);
 
     if (!review) {
@@ -67,7 +67,7 @@ export const deleteReview = catchAsync(async (req, res, next) => {
     });
 });
 
-export const updateReview = catchAsync(async (req, res, next) => {
+const updateReview = catchAsync(async (req, res, next) => {
     const review = await Review.findById(req.params.reviewId);
 
     if (!review) {
@@ -89,3 +89,10 @@ export const updateReview = catchAsync(async (req, res, next) => {
         review
     });
 })
+
+module.exports = {
+    addReview,
+    getReviews,
+    deleteReview,
+    updateReview,
+};
