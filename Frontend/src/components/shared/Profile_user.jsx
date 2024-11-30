@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Input from "./Input";
 import Navbar from "./Navbar";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 
 const ProfileUser = ({ user, loading }) => {
   // Initialize local state based on the user data (if available)
@@ -23,6 +26,7 @@ const ProfileUser = ({ user, loading }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [newSkill, setNewSkill] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const navigate = useNavigate();
 
   // Function to retrieve token from localStorage
   const getToken = () => {
@@ -165,14 +169,18 @@ const ProfileUser = ({ user, loading }) => {
         },
         body: formDataToSend,
       });
-
+      
+      // toast.success('profile updated successfully')
+      
       if (response.ok) {
         console.log("Profile updated successfully.");
       } else {
-        console.error("Failed to update profile.");
+        window.
+        toast.error("Failed to update profile.");
+      
       }
     } catch (error) {
-      console.error("An error occurred while updating the profile:", error);
+      toast.error(err.response?.data?.message || "Registration failed");
     }
   };
 
