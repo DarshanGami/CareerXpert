@@ -1,27 +1,12 @@
 // src/ResumeTable.js
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
+import toast from "react-hot-toast";
 
 const ResumeTable = (props) => {
   var BASE_URL = "http://localhost:5001";
-  const [resumes, setResumes] = useState([
-    {
-      username: "JohnDoe",
-      resume: "https://placehold.co/100x100",
-      status: "Pending",
-    },
-    {
-      username: "JaneSmith",
-      resume: "https://placehold.co/100x100",
-      status: "Pending",
-    },
-    {
-      username: "MikeJohnson",
-      resume: "https://placehold.co/100x100",
-      status: "Pending",
-    },
-  ]);
+  const [resumes, setResumes] = useState([]);
 
   const { search } = useLocation(); // Get the query string from the URL
   const queryParams = new URLSearchParams(search); // Parse the query string
@@ -78,12 +63,21 @@ const ResumeTable = (props) => {
       }
 
       const data = await response.json();
-      console.log(data, "ACCEPTED");
+      const updatedResumes = resumes.map((item) => {
+        if (item?._id === data?.application?._id) {
+          return { ...item, status: data?.application?.status };
+        }
+        return item;
+      });
+
+      setResumes(updatedResumes);
     } catch (error) {
       console.error("Error updating Applicants data:", error);
       return null;
     }
   };
+
+  console.log(resumes);
 
   const handleReject = async (index) => {
     let URL = `${BASE_URL}/api/v1/application/${index}`;
@@ -105,7 +99,14 @@ const ResumeTable = (props) => {
       }
 
       const data = await response.json();
-      console.log(data, "REJECTED");
+      const updatedResumes = resumes.map((item) => {
+        if (item?._id === data?.application?._id) {
+          return { ...item, status: data?.application?.status };
+        }
+        return item;
+      });
+
+      setResumes(updatedResumes);
     } catch (error) {
       console.error("Error updating Applicants data:", error);
       return null;
@@ -115,10 +116,9 @@ const ResumeTable = (props) => {
   useEffect(() => {
     const func = async () => {
       let applicants = await fetchJobApplicant();
-      console.log(applicants, "APPLICANTs");
       const { applications } = applicants;
       if (applications.length > 0) {
-        setResumes([...resumes, applications]);
+        setResumes(applications);
       }
     };
 
@@ -155,28 +155,37 @@ const ResumeTable = (props) => {
                     className="hover:bg-gray-100 transition duration-200"
                   >
                     <td className="py-3 px-4 border-b text-center">
-                      {resume?.username}
+                      {resume?.applicant?.username}
                     </td>
                     <td className="py-3 px-4 border-b text-center">
-                      <img
-                        src={resume.resume}
-                        alt={`Resume of ${resume.username}`}
+                      {/* <img
+                        src={resume?.resume}
+                        alt={`Resume of ${resume?.applicant?.username}`}
                         className="w-16 h-16 object-cover rounded-full mx-auto"
-                      />
+                      /> */}
+                      <Link to={resume?.resume} target="_blank">
+                        {"Resume"}
+                      </Link>
                     </td>
                     <td className="py-3 px-4 border-b text-center">
-                      <button
-                        className="bg-green-500 text-white px-4 py-2 rounded mr-2 hover:bg-green-600 transition duration-200"
-                        onClick={() => handleAccept(index)}
-                      >
-                        Accept
-                      </button>
-                      <button
-                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"
-                        onClick={() => handleReject(index)}
-                      >
-                        Reject
-                      </button>
+                      {resume?.status != "applied" ? (
+                        <p>{resume?.status}</p>
+                      ) : (
+                        <>
+                          <button
+                            className="bg-green-500 text-white px-4 py-2 rounded mr-2 hover:bg-green-600 transition duration-200"
+                            onClick={() => handleAccept(resume?._id)}
+                          >
+                            Accept
+                          </button>
+                          <button
+                            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"
+                            onClick={() => handleReject(resume?._id)}
+                          >
+                            Reject
+                          </button>
+                        </>
+                      )}
                     </td>
                   </tr>
                 ))

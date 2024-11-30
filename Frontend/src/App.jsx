@@ -131,7 +131,7 @@ function App() {
     },
     {
       path: "/jobapply",
-      element: <Job_Apply />,
+      element: <Job_Apply user={currUser} />,
     },
     {
       path: "/jobdcard",
@@ -145,11 +145,11 @@ function App() {
 
     {
       path: "/companydescription",
-      element: <CompanyD />,
+      element: <CompanyD user={currUser} />,
     },
     {
       path: "/applyjobdcard",
-      element: <ApplyJobDcard />,
+      element: <ApplyJobDcard user={currUser} />,
     },
   ]);
 

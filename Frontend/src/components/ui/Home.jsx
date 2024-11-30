@@ -7,7 +7,10 @@ const Home = (props) => {
   return (
     <div>
       <Navbar user={props?.user} />
-      <Home_main setcompanyData={props.setcompanyData} />
+      <Home_main
+        setcompanyData={props.setcompanyData}
+        role={props?.user?.role}
+      />
     </div>
   );
 };

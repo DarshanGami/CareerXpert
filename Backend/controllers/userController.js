@@ -54,6 +54,20 @@ export const register = catchAsync(async (req, res, next) => {
       return next(new AppError("Empty required field.", 400));
     }
 
+    if (email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format validation
+      if (!emailRegex.test(email)) {
+        return next(new AppError("Invalid email format", 400));
+      }
+    }
+
+    if (password) {
+      if (password.length < 8) {
+        return next(new AppError("Password must be at least 8 characters long", 400));
+      }
+    }
+    
+
     // check if email is already registered
     const isExist = await User.findOne({ email });
     if (isExist) {
@@ -210,7 +224,13 @@ export const resetPassword = catchAsync(async (req, res, next) => {
     passwordResetExpires: { $gt: Date.now() },
   });
   if (!user) return next(new AppError("Token is invalid or has expired", 400));
-
+  
+  if (req.body.password) {
+    if (req.body.password.length < 8) {
+      return next(new AppError("Password must be at least 8 characters long", 400));
+    }
+  }
+  
   user.password = req.body.password;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
@@ -377,6 +397,16 @@ export const updateProfile = [
       "passwordResetExpires",
     ];
     sensitiveFields.forEach((field) => delete updateData[field]);
+
+
+    console.log(updateData.phone);
+    if (updateData.phone) {
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(updateData.phone)) {
+      return next(new AppError("Phone number must contain 10 digits", 400));
+    }
+}
+
 
     try {
       // Handle profile photo upload

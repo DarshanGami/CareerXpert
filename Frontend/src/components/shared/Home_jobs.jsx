@@ -5,12 +5,12 @@ import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
 
 const Home_jobs = (props) => {
-  var BASE_URL = "http://localhost:5001";
+  const BASE_URL = "http://localhost:5001";
   const [allJobs, setAllJobs] = useState([]);
   const [filters, setFilters] = useState({
     location: "",
-    role: "",
-    salaryRange: "",
+    domain: "",
+    timing: "",
   });
 
   // Update filters based on user selection
@@ -18,77 +18,16 @@ const Home_jobs = (props) => {
     setFilters({ ...filters, [name]: value });
   };
 
-  const jobs = [
-    {
-      company: "Google",
-      location: "Bengaluru",
-      title: "FullStack Developer",
-      description:
-        "We need a senior Fullstack developer, who can write efficient code and work with frontend and backend.",
-      positions: "2",
-      role: "Fullstack",
-      salaryRange: "1Lakh-5Lakh",
-    },
-    {
-      company: "Microsoft",
-      location: "Delhi",
-      title: "Frontend Developer",
-      description:
-        "Looking for a frontend developer who can create professional UI web pages.",
-      positions: "3",
-      role: "Frontend",
-      salaryRange: "42K-1Lakh",
-    },
-    {
-      company: "Amazon",
-      location: "Mumbai",
-      title: "Backend Developer",
-      description:
-        "Seeking a backend developer proficient in database management and server-side logic.",
-      positions: "1",
-      role: "Backend",
-      salaryRange: "0-40K",
-    },
-    {
-      company: "Apple",
-      location: "Pune",
-      title: "DevOps Engineer",
-      description:
-        "Hiring a DevOps engineer with expertise in CI/CD and cloud infrastructure.",
-      positions: "2",
-      role: "DevOps",
-      salaryRange: "42K-1Lakh",
-    },
-    {
-      company: "Facebook",
-      location: "Chennai",
-      title: "Data Scientist",
-      description:
-        "Looking for a data scientist with expertise in data analysis and machine learning.",
-      positions: "4",
-      role: "Data-Science",
-      salaryRange: "1Lakh-5Lakh",
-    },
-    {
-      company: "Netflix",
-      location: "Delhi",
-      title: "Frontend Developer",
-      description:
-        "We need a frontend developer who can create visually appealing and user-friendly designs.",
-      positions: "1",
-      role: "Frontend",
-      salaryRange: "0-40K",
-    },
-  ];
-
-  const filteredJobs = jobs.filter((job) => {
+  // Filter allJobs array based on user-selected filters
+  const filteredJobs = allJobs.filter((job) => {
     return (
-      (!filters.location || job.location === filters.location) &&
-      (!filters.role || job.role === filters.role) &&
-      (!filters.salaryRange || job.salaryRange === filters.salaryRange)
+      (!filters.location || job?.location === filters.location) &&
+      (!filters.domain || job?.domain === filters.domain) &&
+      (!filters.timing || job?.timing === filters.timing)
     );
   });
 
+  // Fetch jobs from the backend
   const fetchJobs = async () => {
     const url = `${BASE_URL}/api/v1/jobs/`;
     try {
@@ -99,15 +38,9 @@ const Home_jobs = (props) => {
         },
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to fetch job data");
-      }
-
       const data = await response.json();
-
-      if (data.status !== "success") {
-        throw new Error("Unexpected response format");
+      if (!response.ok || data.status !== "success") {
+        throw new Error(data.message || "Failed to fetch job data");
       }
 
       return data.jobs;
@@ -117,12 +50,13 @@ const Home_jobs = (props) => {
     }
   };
 
+  // Fetch jobs on component mount
   useEffect(() => {
-    const func = async () => {
+    const fetchAndSetJobs = async () => {
       const jobs = await fetchJobs();
       setAllJobs(jobs);
     };
-    func();
+    fetchAndSetJobs();
   }, []);
 
   return (
@@ -137,7 +71,7 @@ const Home_jobs = (props) => {
             options={[
               { value: "", label: "All" },
               { value: "Delhi", label: "Delhi" },
-              { value: "Bengaluru", label: "Bengaluru" },
+              { value: "Bangalore", label: "Bangalore" },
               { value: "Pune", label: "Pune" },
               { value: "Mumbai", label: "Mumbai" },
               { value: "Chennai", label: "Chennai" },
@@ -146,30 +80,32 @@ const Home_jobs = (props) => {
             onChange={(value) => handleFilterChange("location", value)}
           />
           <RadioDropdown
-            title="Role"
-            name="role"
+            title="Domain"
+            name="domain"
             options={[
               { value: "", label: "All" },
-              { value: "Frontend", label: "Frontend" },
-              { value: "Backend", label: "Backend" },
-              { value: "Fullstack", label: "Fullstack" },
-              { value: "DevOps", label: "DevOps" },
-              { value: "Data-Science", label: "Data-Science" },
+              { value: "Management", label: "Management" },
+              { value: "Engineering", label: "Engineering" },
+              { value: "Law", label: "Law" },
+              { value: "Arts", label: "Arts" },
+              { value: "Biology", label: "Biology" },
             ]}
-            selected={filters.role}
-            onChange={(value) => handleFilterChange("role", value)}
+            selected={filters.domain}
+            onChange={(value) => handleFilterChange("domain", value)}
           />
           <RadioDropdown
-            title="Salary Range"
-            name="salaryRange"
+            title="Timing"
+            name="timing"
             options={[
               { value: "", label: "All" },
-              { value: "0-40K", label: "0-40K" },
-              { value: "42K-1Lakh", label: "42K-1Lakh" },
-              { value: "1Lakh-5Lakh", label: "1Lakh-5Lakh" },
+              { value: "Full Time", label: "Full Time" },
+              { value: "Part Time", label: "Part Time" },
+              { value: "Internship", label: "Internship" },
+              { value: "Contract", label: "Contract" },
+              { value: "Freelance", label: "Freelance" },
             ]}
-            selected={filters.salaryRange}
-            onChange={(value) => handleFilterChange("salaryRange", value)}
+            selected={filters.timing}
+            onChange={(value) => handleFilterChange("timing", value)}
           />
         </div>
 
@@ -177,9 +113,12 @@ const Home_jobs = (props) => {
         <div className="p-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredJobs.length > 0 ? (
-              filteredJobs.map((job, index) => (
-                <Link to="/applyjobdcard">
-                  <Jobcard key={index} {...job} />
+              filteredJobs.map((job) => (
+                <Link
+                  to={`/applyjobdcard?job_id=${job?._id}&role=${props?.user?.role}`}
+                  key={job.id || job.title}
+                >
+                  <Jobcard {...job} role={props?.user?.role} />
                 </Link>
               ))
             ) : (
