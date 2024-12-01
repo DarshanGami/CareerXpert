@@ -11,6 +11,7 @@ function AvatarDropdown({
   userEmail = "name@flowbite.com",
   userImage = "/docs/images/people/profile-picture-3.jpg",
 }) {
+  var BASE_URL = import.meta.env.VITE_BACKEND_HOST;
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -27,7 +28,7 @@ function AvatarDropdown({
     let token = getToken();
 
     try {
-      const response = await fetch("http://localhost:5001/api/v1/user/logout", {
+      const response = await fetch(`${BASE_URL}/api/v1/user/logout`, {
         method: "GET",
         headers: {
           // "Content-Type": "application/json",

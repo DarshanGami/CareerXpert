@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const EditCompanyForm = (props) => {
+  var BASE_URL = import.meta.env.VITE_BACKEND_HOST;
   const navigate = useNavigate();
   const [EditCompany, setEditCompany] = useState(false);
   console.log(props.companyData);
@@ -60,7 +61,7 @@ const EditCompanyForm = (props) => {
     try {
       // Send data to the backend API
       const response = await axios.post(
-        "http://localhost:5001/api/v1/company/register", // Backend API endpoint
+        `${BASE_URL}/api/v1/company/register`, // Backend API endpoint
         formData,
         {
           headers: {
@@ -112,7 +113,7 @@ const EditCompanyForm = (props) => {
     try {
       // Send updated data to the backend API
       const response = await axios.put(
-        `http://localhost:5001/api/v1/company/update/${props.companyData._id}`, // Backend API endpoint with ID
+        `${BASE_URL}/api/v1/company/update/${props.companyData._id}`, // Backend API endpoint with ID
         formData, // Updated data object to be sent
         {
           headers: {

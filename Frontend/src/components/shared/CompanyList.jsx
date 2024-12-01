@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 const CompanyList = (props) => {
+  var BASE_URL = import.meta.env.VITE_BACKEND_HOST;
   const [companies, setCompanies] = useState([]); // Set initial state to an empty array
   const [isLoading, setIsLoading] = useState(true); // For loading state
   const [error, setError] = useState(null); // For error state
@@ -25,16 +26,13 @@ const CompanyList = (props) => {
     const fetchCompanies = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/v1/company/my-companies",
+          `${BASE_URL}/api/v1/company/my-companies`,
           {
             headers: {
               // "Content-Type": "application/json",
               Authorization: `Bearer ${token}`, // Send token in Authorization header
             },
           }
-          //   {
-          //     withCredentials: true, // Ensures cookies are sent with request (for authentication)
-          //   }
         );
         setCompanies(response.data.companies); // Set the companies data to the state
       } catch (error) {
@@ -54,7 +52,7 @@ const CompanyList = (props) => {
     e.stopPropagation();
     try {
       const response = await axios.delete(
-        `http://localhost:5001/api/v1/company/delete/${companyId}`,
+        `${BASE_URL}/api/v1/company/delete/${companyId}`,
         {
           headers: {
             // "Content-Type": "application/json",

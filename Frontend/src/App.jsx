@@ -24,7 +24,7 @@ import CompanyD from "./components/shared/CompanyD";
 import ApplyJobDcard from "./components/shared/ApplyJobDcard";
 
 function App() {
-  var BASE_URL = "http://localhost:5001";
+  var BASE_URL = import.meta.env.VITE_BACKEND_HOST;
   const [companyData, setcompanyData] = useState({});
   const [currUser, setCurrUser] = useState();
 
@@ -40,6 +40,7 @@ function App() {
       console.error("No token found");
       return null;
     }
+    console.log(currUser, "[URL]");
 
     try {
       const response = await fetch(`${BASE_URL}/api/v1/user/me`, {

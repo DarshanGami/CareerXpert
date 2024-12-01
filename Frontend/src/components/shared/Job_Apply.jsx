@@ -6,35 +6,6 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
 
-const jobApplications = [
-  {
-    logo: { google }, // replace with actual logo URLs
-    companyName: "Google",
-    role: "Frontend Developer",
-    appliedDate: "2024-10-01",
-    status: "Pending",
-    resumelinks: "/",
-  },
-  {
-    logo: { google },
-    companyName: "Microsoft",
-    role: "Backend Developer",
-    appliedDate: "2024-10-05",
-    status: "Accepted",
-    resumelinks: "/",
-  },
-  {
-    logo: { google },
-    companyName: "Amazon",
-    role: "Data Scientist",
-    appliedDate: "2024-10-10",
-    status: "Rejected",
-    resumelinks: "/",
-  },
-  // Add more jobs as needed
-];
-
-
 const Job_Apply = (props) => {
   var BASE_URL = import.meta.env.VITE_BACKEND_HOST;
   const getToken = () => {
@@ -47,7 +18,7 @@ const Job_Apply = (props) => {
   const fetchMyApplications = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5001/api/v1/application/myapplications`,
+        `${BASE_URL}/api/v1/application/myapplications`,
         {
           method: "GET",
           headers: {
@@ -77,7 +48,6 @@ const Job_Apply = (props) => {
 
     func();
   }, []);
-  console.log(myJobs, "[MY JOBS]");
 
   return (
     <div>

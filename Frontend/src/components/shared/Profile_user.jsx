@@ -159,12 +159,13 @@ const ProfileUser = ({ user, loading }) => {
       console.log(`${key}:`, value);
     }
 
-    let base_url = "http://localhost:5001";
+  
+    let BASE_URL = import.meta.env.VITE_BACKEND_HOST;
     let token = getToken();
 
     try {
       const response = await axios.patch(
-        `${base_url}/api/v1/user/update-profile/`,
+        `${BASE_URL}/api/v1/user/update-profile/`,
         formDataToSend,
         {
           headers: {

@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 import toast from "react-hot-toast";
 
 const ApplyJobDcard = (props) => {
-  var BASE_URL = "http://localhost:5001";
+  var BASE_URL = import.meta.env.VITE_BACKEND_HOST;
   const [currentJobDetail, setCurrentJobDetail] = useState(null);
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -24,15 +24,36 @@ const ApplyJobDcard = (props) => {
   };
   const token = getToken();
 
+  const fetchMyApplications = async () => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/v1/application/myapplications`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to fetch Applications");
+      }
+
+      const data = await response.json();
+      return data?.applications;
+    } catch (error) {
+      console.error("Error fetching your applications:", error);
+      return null;
+    }
+  };
+
   // fetch the user data
   const fetchJobDetails = async () => {
     try {
       const response = await fetch(`${BASE_URL}/api/v1/jobs/${job_id}`, {
         method: "GET",
-        headers: {
-          //   "Content-Type": "application/json",
-          //   Authorization: `Bearer ${token}`, // Send token in Authorization header
-        },
       });
 
       if (!response.ok) {
@@ -87,11 +108,11 @@ const ApplyJobDcard = (props) => {
 
       console.log("Application submitted successfully:", data);
       // alert("Application submitted successfully!");
-      toast("Application Submitted");
+      toast.success("Application Submitted");
     } catch (error) {
       console.error("Error applying for the job:", error);
       // alert(error.message || "Something went wrong. Please try again.");
-      toast(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -116,8 +137,6 @@ const ApplyJobDcard = (props) => {
   const formatSalaryToLPA = `${(currentJobDetail?.salary / 100000).toFixed(
     2
   )} LPA`;
-
-  // console.log(props, "[PROPS]");
 
   return (
     <div>
@@ -146,10 +165,11 @@ const ApplyJobDcard = (props) => {
           {role != "Recruiter" && (
             <button
               onClick={handleJobApply}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold"
+              className={
+                "bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold"
+              }
             >
-              {" "}
-              Apply For Job
+              {"Apply For Job"}
             </button>
           )}
         </div>
@@ -198,6 +218,3 @@ const ApplyJobDcard = (props) => {
 };
 
 export default ApplyJobDcard;
-
-
-

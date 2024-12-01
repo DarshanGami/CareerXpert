@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 const Signup = () => {
+  var BASE_URL = import.meta.env.VITE_BACKEND_HOST;
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("Job Seeker");
@@ -18,15 +19,12 @@ const Signup = () => {
     e.preventDefault();
     setIsLoading(true); // Start loader
     try {
-      const response = await axios.post(
-        "http://localhost:5001/api/v1/user/register",
-        {
-          username,
-          email,
-          password,
-          role,
-        }
-      );
+      const response = await axios.post(`${BASE_URL}/api/v1/user/register`, {
+        username,
+        email,
+        password,
+        role,
+      });
       toast.success(response.data.message);
       navigate("/login"); // Redirect to login page upon successful registration
     } catch (err) {

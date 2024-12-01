@@ -71,7 +71,7 @@ const Home_main = (props) => {
         )}
 
         <div className="flex flex-row justify-center mt-16 mb-8 items-start">
-          <div className="flex px-12 gap-4">
+          {/* <div className="flex px-12 gap-4">
             <Cards_2
               title="Jobs"
               link="/forget"
@@ -90,7 +90,7 @@ const Home_main = (props) => {
                 { text: "UI/UX Designer", link: "/ui-ux-designer" },
               ]}
             />
-          </div>
+          </div> */}
           <div>
             <div className="mt-4">
               <h1 className="text-4xl font-bold text-blue-700">

@@ -31,11 +31,11 @@ const Jobcard = (props) => {
         </span>
       </div>
       <div className="flex justify-between items-center">
-        {props?.role != "Recruiter" && (
+        {/* {props?.role != "Recruiter" && (
           <button className="px-4 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-colors">
             Save For Later
           </button>
-        )}
+        )} */}
         <button className="text-blue-600 hover:underline font-medium">
           Details
         </button>

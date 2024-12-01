@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import Jobcard from "./Jobcard";
 import RadioDropdown from "./RadioDropdown";
 import Navbar from "./Navbar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Home_jobs = (props) => {
-  const BASE_URL = "http://localhost:5001";
+  const BASE_URL = import.meta.env.VITE_BACKEND_HOST;
   const [allJobs, setAllJobs] = useState([]);
   const [filters, setFilters] = useState({
     location: "",
     domain: "",
     timing: "",
+    search: "", // Search filter for title and company name
   });
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
 
   // Update filters based on user selection
   const handleFilterChange = (name, value) => {
@@ -23,7 +26,12 @@ const Home_jobs = (props) => {
     return (
       (!filters.location || job?.location === filters.location) &&
       (!filters.domain || job?.domain === filters.domain) &&
-      (!filters.timing || job?.timing === filters.timing)
+      (!filters.timing || job?.timing === filters.timing) &&
+      (!filters.search ||
+        job?.title?.toLowerCase().includes(filters.search.toLowerCase()) ||
+        job?.company?.name
+          ?.toLowerCase()
+          .includes(filters.search.toLowerCase()))
     );
   });
 
@@ -55,6 +63,13 @@ const Home_jobs = (props) => {
     const fetchAndSetJobs = async () => {
       const jobs = await fetchJobs();
       setAllJobs(jobs);
+      let job_filter = queryParams.get("filter_job");
+      if (job_filter) {
+        setFilters({
+          ...filters,
+          timing: job_filter,
+        });
+      }
     };
     fetchAndSetJobs();
   }, []);
@@ -65,6 +80,16 @@ const Home_jobs = (props) => {
       <div className="flex gap-10 min-h-screen">
         {/* Sidebar for filters */}
         <div className="flex flex-col bg-gray-100 p-4 space-y-4">
+          {/* Search Bar */}
+          <div>
+            <input
+              type="text"
+              placeholder="Search by Title or Company"
+              className="w-full p-2 border border-gray-300 rounded"
+              value={filters.search}
+              onChange={(e) => handleFilterChange("search", e.target.value)}
+            />
+          </div>
           <RadioDropdown
             title="Location"
             name="location"

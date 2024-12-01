@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 const JobList = (props) => {
   const [currentJobList, setCurrentJobList] = useState([]);
 
-  var BASE_URL = "http://localhost:5001";
+  var BASE_URL = import.meta.env.VITE_BACKEND_HOST;
   const { search } = useLocation(); // Get the query string from the URL
   const queryParams = new URLSearchParams(search); // Parse the query string
   const company_id = queryParams.get("company_id");

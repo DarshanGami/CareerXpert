@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 import toast from "react-hot-toast";
 
 const ResumeTable = (props) => {
-  var BASE_URL = "http://localhost:5001";
+  var BASE_URL = import.meta.env.VITE_BACKEND_HOST;
   const [resumes, setResumes] = useState([]);
 
   const { search } = useLocation(); // Get the query string from the URL
@@ -164,7 +164,7 @@ const ResumeTable = (props) => {
                         className="w-16 h-16 object-cover rounded-full mx-auto"
                       /> */}
                       <Link to={resume?.resume} target="_blank">
-                        {"Resume"}
+                        <u>{"Link"}</u>
                       </Link>
                     </td>
                     <td className="py-3 px-4 border-b text-center">

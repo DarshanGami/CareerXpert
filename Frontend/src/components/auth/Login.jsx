@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 
 function Login() {
+  var BASE_URL = import.meta.env.VITE_BACKEND_HOST;
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +18,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/v1/user/login",
+        `${BASE_URL}/api/v1/user/login`,
         { email, password, role }
       );
       toast.success(response.data.message);

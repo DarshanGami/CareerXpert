@@ -38,7 +38,7 @@ const JobApplicationCard = (props) => {
           className={`mt-2 ${
             props.status === "Pending"
               ? "text-yellow-500"
-              : props.status === "Accepted"
+              : props.status === "accepted"
               ? "text-green-500"
               : "text-red-500"
           }`}
