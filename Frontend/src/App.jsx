@@ -28,6 +28,8 @@ function App() {
   const [companyData, setcompanyData] = useState({});
   const [currUser, setCurrUser] = useState();
 
+  console.log(BASE_URL, "[BASSE]");
+  
   // Function to retrieve token from localStorage
   const getToken = () => {
     return localStorage.getItem("TOKEN");

@@ -201,7 +201,7 @@ const forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // Send token via email
-  const resetURL = `http://localhost:5173/reset-password/${resetToken}`;
+  const resetURL = `https://careerxpert.onrender.com/reset-password/${resetToken}`;
   await sendEmail({
     email: user.email,
     subject: "Password Reset Request",

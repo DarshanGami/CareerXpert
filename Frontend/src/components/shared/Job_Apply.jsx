@@ -57,7 +57,7 @@ const Job_Apply = (props) => {
         <h1 className="text-4xl font-bold text-blue-700 mb-8">
           My Job Applications
         </h1>
-        {myJobs.map((job, index) => {
+        {myJobs?.map((job, index) => {
           const appliedDate = new Date(job?.createdAt).toLocaleDateString(
             "en-US",
             {
