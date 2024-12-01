@@ -69,7 +69,7 @@ const deleteReview = catchAsync(async (req, res, next) => {
   });
 });
 
-export const updateReview = catchAsync(async (req, res, next) => {
+const updateReview = catchAsync(async (req, res, next) => {
   const review = await Review.findById(req.params.reviewId);
 
   if (!review) {
