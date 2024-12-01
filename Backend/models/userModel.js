@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import validator from "validator";
-import bcrypt from "bcryptjs";
+const mongoose = require("mongoose");
+const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
@@ -136,4 +136,4 @@ userSchema.pre("save", async function (next) {
 //     return await bcrypt.compare(candidatePassword, userPassword);
 // };
 
-export const User = mongoose.model("User", userSchema);
+module.exports.User = mongoose.model("User", userSchema);

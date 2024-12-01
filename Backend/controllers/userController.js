@@ -1,15 +1,15 @@
-import { catchAsync } from "../middlewares/catchAsync.js";
-import AppError from "../middlewares/errorHandler.js";
-import { User } from "./../models/userModel.js";
-import { sendVerificationEmail } from "../utils/sendEmail.js";
-import { sendEmail } from "../utils/sendEmail.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import crypto from "crypto";
-// import  {v2 as cloudinary } from 'cloudinary';
-import cloudinary from "../utils/cloudinary.js";
-import { Job } from "./../models/jobModel.js";
-import multer from "multer";
+const { catchAsync } = require("../middlewares/catchAsync.js");
+const { AppError } = require("../middlewares/errorHandler.js");
+const { User } = require("../models/userModel.js");
+const { sendVerificationEmail, sendEmail } = require("../utils/sendEmail.js");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+// const { v2: cloudinary } = require('cloudinary');
+const cloudinary = require("../utils/cloudinary.js");
+const { Job } = require("../models/jobModel.js");
+const multer = require("multer");
+
 
 // cloudinary.config({
 //     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -45,7 +45,7 @@ const createSendToken = (user, statusCode, res, message) => {
   });
 };
 
-export const register = catchAsync(async (req, res, next) => {
+const register = catchAsync(async (req, res, next) => {
   try {
     const { username, email, password, role } = req.body;
 
@@ -105,7 +105,7 @@ export const register = catchAsync(async (req, res, next) => {
   }
 });
 
-export const verifyEmail = catchAsync(async (req, res, next) => {
+const verifyEmail = catchAsync(async (req, res, next) => {
   try {
     const { token } = req.query;
 
@@ -134,7 +134,7 @@ export const verifyEmail = catchAsync(async (req, res, next) => {
   }
 });
 
-export const login = catchAsync(async (req, res, next) => {
+const login = catchAsync(async (req, res, next) => {
   const { email, password, role } = req.body;
 
   // check if required fields are empty
@@ -169,7 +169,7 @@ export const login = catchAsync(async (req, res, next) => {
   createSendToken(user, 201, res, "user logged in successfully");
 });
 
-export const logout = catchAsync(async (req, res, next) => {
+const logout = catchAsync(async (req, res, next) => {
   // clear cookie by expiring it at current time
   console.log("Logout request received:", req.headers);
 
@@ -187,7 +187,7 @@ export const logout = catchAsync(async (req, res, next) => {
   // after that it will be removed from client side, now shoul be redirected to login page
 });
 
-export const forgotPassword = catchAsync(async (req, res, next) => {
+const forgotPassword = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) return next(new AppError("User not found with that email.", 404));
 
@@ -214,7 +214,7 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
   });
 });
 
-export const resetPassword = catchAsync(async (req, res, next) => {
+const resetPassword = catchAsync(async (req, res, next) => {
   const hashedToken = crypto
     .createHash("sha256")
     .update(req.params.token)
@@ -239,7 +239,7 @@ export const resetPassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res, "Password reset successfull.");
 });
 
-export const getMe = catchAsync(async (req, res, next) => {
+const getMe = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user._id);
 
   if (typeof user.socialLinks === "string") {
@@ -261,7 +261,7 @@ export const getMe = catchAsync(async (req, res, next) => {
   });
 });
 
-// export const updateProfile = catchAsync(async (req, res, next) => {
+// const updateProfile = catchAsync(async (req, res, next) => {
 //   // Prevent password updates through this route
 //   if (req.body.password || req.body.passwordConfirm) {
 //     return next(
@@ -377,7 +377,7 @@ const upload = multer({
   fileFilter,
 });
 
-export const updateProfile = [
+const updateProfile = [
   upload.fields([
     { name: "profilePhoto", maxCount: 1 },
     { name: "resume", maxCount: 1 },
@@ -505,7 +505,7 @@ export const updateProfile = [
   }),
 ];
 
-export const deleteUserbyId = async (req, res) => {
+const deleteUserbyId = async (req, res) => {
   console.log(req.params);
 
   try {
@@ -525,7 +525,7 @@ export const deleteUserbyId = async (req, res) => {
   }
 };
 
-export const getJobRecommendations = catchAsync(async (req, res, next) => {
+const getJobRecommendations = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user._id);
 
   if (!user) {
@@ -574,3 +574,16 @@ export const getJobRecommendations = catchAsync(async (req, res, next) => {
     jobs,
   });
 });
+
+module.exports = {
+  register,
+  verifyEmail,
+  login,
+  logout,
+  forgotPassword,
+  resetPassword,
+  getMe,
+  updateProfile,
+  deleteUserbyId,
+  getJobRecommendations
+};

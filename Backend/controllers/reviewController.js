@@ -1,51 +1,51 @@
-import AppError from "../middlewares/errorHandler.js";
-import { catchAsync } from "../middlewares/catchAsync.js";
-import { Review } from "../models/reviewModel.js";
-import { Company } from "../models/companyModel.js";
+const { AppError } = require("../middlewares/errorHandler.js");
+const { catchAsync } = require("../middlewares/catchAsync.js");
+const { Review } = require("../models/reviewModel.js");
+const { Company } = require("../models/companyModel.js");
 
-export const addReview = catchAsync(async (req, res, next) => {
-  const existingReview = await Review.findOne({
-    company: req.params.companyId,
-    user: req.user._id,
-  });
+const addReview = catchAsync(async (req, res, next) => {
+    const existingReview = await Review.findOne({
+        company: req.params.companyId,
+        user: req.user._id,
+    });
 
-  if (existingReview) {
-    return next(new AppError("You have already reviewed this company", 400));
-  }
+    if (existingReview) {
+        return next(new AppError('You have already reviewed this company', 400));
+    }
 
-  const review = new Review({
-    company: req.params.id,
-    user: req.user._id,
-    rating: req.body.rating,
-    reviewText: req.body.reviewText,
-  });
+    const review = new Review({
+        company: req.params.companyId,
+        user: req.user._id,
+        rating: req.body.rating,
+        reviewText: req.body.reviewText,
+    });
 
-  await review.save();
+    await review.save();
 
-  const company = await Company.findById(req.params.id);
-  company.reviews.push(review._id);
-  await company.save();
+    const company = await Company.findById(req.params.id);
+    company.reviews.push(review._id);
+    await company.save();
 
-  res.status(201).json({
-    status: "success",
-    message: "Review added successfully",
-    review,
-  });
+    res.status(201).json({
+        status: 'success',
+        message: 'Review added successfully',
+        review,
+    });
 });
 
-export const getReviews = catchAsync(async (req, res, next) => {
-  const reviews = await Review.find({ company: req.params.companyId })
-    .populate("user", "username")
-    .populate("company", "name");
+const getReviews = catchAsync(async (req, res, next) => {
+    const reviews = await Review.find({ company: req.params.companyId })
+        .populate('user', 'username')
+        .populate('company', 'name');
 
-  res.status(200).json({
-    status: "success",
-    reviews,
-  });
+    res.status(200).json({
+        status: 'success',
+        reviews
+    });
 });
 
-export const deleteReview = catchAsync(async (req, res, next) => {
-  const review = await Review.findById(req.params.reviewId);
+const deleteReview = catchAsync(async (req, res, next) => {
+    const review = await Review.findById(req.params.reviewId);
 
   if (!review) {
     return next(new AppError("No review found with that ID", 404));
@@ -93,3 +93,10 @@ export const updateReview = catchAsync(async (req, res, next) => {
     review,
   });
 });
+
+module.exports = {
+    addReview,
+    getReviews,
+    deleteReview,
+    updateReview,
+};

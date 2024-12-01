@@ -1,11 +1,10 @@
-import express from 'express';
-import { isAuthenticated, isAuthorized } from '../middlewares/auth.js';
-import { getAllJobs, getJobById } from '../controllers/jobController.js';
-
+const express = require('express');
+const { isAuthenticated, isAuthorized } = require('../middlewares/auth.js');
+const { getAllJobs, getJobById } = require('../controllers/jobController.js');
 
 const jobRouter2 = express.Router();
 
-jobRouter2.get('/', getAllJobs)
-jobRouter2.get('/:id', getJobById)
+jobRouter2.get('/', getAllJobs);
+jobRouter2.get('/:id', getJobById);
 
-export default jobRouter2;
+module.exports = jobRouter2;
