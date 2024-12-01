@@ -3,6 +3,7 @@ import Input from "./Input";
 import Navbar from "./Navbar";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 const ProfileUser = ({ user, loading }) => {
@@ -162,25 +163,22 @@ const ProfileUser = ({ user, loading }) => {
     let token = getToken();
 
     try {
-      const response = await fetch(`${base_url}/api/v1/user/update-profile/`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formDataToSend,
-      });
+      const response = await axios.patch(
+        `${base_url}/api/v1/user/update-profile/`,
+        formDataToSend,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data", // For sending FormData
+          },
+        }
+      );
       
-      // toast.success('profile updated successfully')
-      
-      if (response.ok) {
-        console.log("Profile updated successfully.");
-      } else {
-        window.
-        toast.error("Failed to update profile.");
-      
-      }
-    } catch (error) {
+      toast.success(response.data.message)
+    } catch (err) {
+      console.log(err)
       toast.error(err.response?.data?.message || "Registration failed");
+      
     }
   };
 

@@ -21,11 +21,11 @@ function Login() {
         { email, password, role }
       );
       toast.success(response.data.message);
-
+      console.log(response)
       localStorage.setItem("TOKEN", response.data.token);
       localStorage.setItem("EMAIL", email);
       localStorage.setItem("ROLE", role);
-
+      
       navigate("/"); // Redirect to home page upon successful login
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");

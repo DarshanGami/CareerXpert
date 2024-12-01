@@ -1,7 +1,9 @@
+const { Job } = require("../models/jobModel.js");
 const { AppError } = require("../middlewares/errorHandler.js");
 const { catchAsync } = require("../middlewares/catchAsync.js");
 const { Company } = require("../models/companyModel.js");
 const { Review } = require("../models/reviewModel.js");
+
 
 const registerCompany = catchAsync(async (req, res, next) => {
   try {
@@ -82,6 +84,42 @@ const updateCompany = catchAsync(async (req, res, next) => {
     return next(new AppError("Company not found", 404));
   }
 
+  const updateData = { ...req.body };
+
+  const socialLinks = JSON.parse(updateData.socialLinks);
+
+  if (socialLinks.twitter) {
+    const twitterRegex = /^https:\/\/(www\.)?x\.com\//;
+    if (!twitterRegex.test(socialLinks.twitter)) {
+      console.log('error in twitter url')
+      return next(new AppError("Invalid Twitter URL format", 400));
+    }
+  }
+  
+  if (socialLinks.intagram) {
+    const instaRegex = /^https:\/\/(www\.)?instagram\.com\//;
+    if (!instaRegex.test(socialLinks.intagram)) {
+      console.log('error in github url')
+      return next(new AppError("Invalid instagram URL format", 400));
+    }
+  }
+  
+  if (socialLinks.linkedin) {
+    const linkedinRegex = /^https:\/\/(www\.)?linkedin\.com\//;
+    if (!linkedinRegex.test(socialLinks.linkedin)) {
+      console.log('error in linkedin url')
+      return next(new AppError("Invalid LinkedIn URL format", 400));
+    }
+  }
+
+  if (socialLinks.facebook) {
+    const facebookRegex = /^https:\/\/(www\.)?facebook\.com\//;
+    if (!facebookRegex.test(socialLinks.facebook)) {
+      console.log('error in facebook url')
+      return next(new AppError("Invalid Facebook URL format", 400));
+    }
+  }
+
   const updatedCompany = await Company.findOneAndUpdate(
     // Check if company belongs to user
     { _id: req.params.id, registeredBy: req.user?._id || null },
@@ -118,6 +156,10 @@ const deleteCompany = catchAsync(async (req, res, next) => {
   if (!deleteCompany) {
     return next(new AppError("You can only delete your companies", 403));
   }
+
+   // Delete all jobs associated with the company
+   await Job.deleteMany({ company: req.params.id });
+
 
   res.status(200).json({
     status: "success",

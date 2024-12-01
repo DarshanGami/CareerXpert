@@ -37,24 +37,11 @@ const companySchema = new mongoose.Schema({
         type: Number
     },
 
-    social: {
-
-        linkedin: {
-            type: String,
-        },
-
-        facebook: {
-            type: String,
-        },
-
-        twitter: {
-            type: String,
-        },
-
-        instagram: {
-            type: String,
-        },
-
+    socialLinks: {
+        linkedin: String,
+        instagram: String,
+        facebook: String,
+        twitter: String,
     },
     
     opportunities: [{
