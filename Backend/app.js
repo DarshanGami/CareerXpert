@@ -13,7 +13,7 @@ const applicationRouter = require('./routes/applicationRoutes.js');
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173', // Allow requests from your frontend's origin
+    origin: 'https://careerxpert.vercel.app', // Allow requests from your frontend's origin
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], // Specify allowed HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
     credentials: true,
