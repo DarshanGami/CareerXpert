@@ -399,13 +399,47 @@ export const updateProfile = [
     sensitiveFields.forEach((field) => delete updateData[field]);
 
 
-    console.log(updateData.phone);
     if (updateData.phone) {
-    const phoneRegex = /^\d{10}$/;
-    if (!phoneRegex.test(updateData.phone)) {
-      return next(new AppError("Phone number must contain 10 digits", 400));
+      const phoneRegex = /^\d{10}$/;
+      if (!phoneRegex.test(updateData.phone)) {
+        return next(new AppError("Invalid phone number", 400));
+      }
     }
-}
+
+    const socialLinks = JSON.parse(updateData.socialLinks);
+    console.log(socialLinks)
+    if (socialLinks.twitter) {
+      const twitterRegex = /^https:\/\/(www\.)?x\.com\//;
+      if (!twitterRegex.test(socialLinks.twitter)) {
+        console.log('error in twitter url')
+        return next(new AppError("Invalid Twitter URL format", 400));
+      }
+    }
+    
+    if (socialLinks.github) {
+      const githubRegex = /^https:\/\/(www\.)?github\.com\//;
+      if (!githubRegex.test(socialLinks.github)) {
+        console.log('error in github url')
+        return next(new AppError("Invalid GitHub URL format", 400));
+      }
+    }
+    
+    
+    if (socialLinks.linkedin) {
+      const linkedinRegex = /^https:\/\/(www\.)?linkedin\.com\//;
+      if (!linkedinRegex.test(socialLinks.linkedin)) {
+        console.log('error in linkedin url')
+        return next(new AppError("Invalid LinkedIn URL format", 400));
+      }
+    }
+
+    if (socialLinks.portfolio) {
+      const portfolioRegex = /^(https?:\/\/)(www\.)?([a-zA-Z0-9-]+)(\.[a-zA-Z]{2,})(\/[\w-./?%&=]*)?$/;
+      if (!portfolioRegex.test(socialLinks.portfolio)) {
+        console.log('error in portfolio url')
+        return next(new AppError("Invalid poerfolio URL format", 400));
+      }
+    }
 
 
     try {
