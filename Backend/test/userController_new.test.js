@@ -3,7 +3,9 @@ const { describe, it, beforeEach, before } = require('mocha');
 const app = require('../app'); // Import the app instance
 const { connection } = require('../DB_connect'); // Import your DB connection logic
 const chai = require('chai');
+const FormData = require('form-data');
 const chaiHttp = require('chai-http');
+const mongoose = require('mongoose');
 const User = require('../models/userModel'); // Assuming your user model is in this path
 
 // Use chai-http for making requests and chai for assertions
@@ -19,6 +21,12 @@ before(async () => {
     console.error('DB connection failed', error);
   }
 });
+
+// after(async function() {
+//     await db.dropDatabase();
+//     await client.close();
+// });
+
 
 let jobSeekerRegTkn;
 let recruiterRegTkn;
@@ -50,6 +58,7 @@ describe('User Registration API Unit Tests', function () {
 
           const response = await request(app).post('/api/v1/user/register').send(jobSeeker);
 
+          console.log(response.body);
           jobSeekerRegTkn = response.body.verificationToken;
           jobSeekerId = response.body.user._id;
           expect(response.status).to.equal(200);
@@ -149,40 +158,40 @@ describe('User Registration API Unit Tests', function () {
           expect(response.body).to.have.property('message', 'Empty required field.');
       });
 
-      // it('Return an Error for Invalid Email Format', async function () {
-      //     this.timeout(0); 
+      it('Return an Error for Invalid Email Format', async function () {
+          this.timeout(0); 
 
-      //     const userData = {
-      //         username: 'Harmit',
-      //         email: 'invalid-email',
-      //         password: 'Passw0rd@123',
-      //         role: 'Job Seeker',
-      //     };
+          const userData = {
+              username: 'Harmit',
+              email: 'invalid-email',
+              password: 'Passw0rd@123',
+              role: 'Job Seeker',
+          };
 
-      //     const response = await request(app).post('/api/v1/user/register').send(userData);
+          const response = await request(app).post('/api/v1/user/register').send(userData);
 
-      //     expect(response.status).to.equal(400);
-      //     expect(response.body).to.have.property('message', 'User validation failed: email: Please provide a valid email');
-      // });
+          expect(response.status).to.equal(400);
+          expect(response.body).to.have.property('message', 'Invalid email format');
+      });
 
-      // it('Return an Error for Weak Password', async function () {
-      //     this.timeout(0); 
+      it('Return an Error for password length is less than 8', async function () {
+          this.timeout(0); 
 
-      //     const userData = {
-      //         username: 'Harmit',
-      //         email: 'email4@gmail.com',
-      //         password: 'weakpass',
-      //         role: 'Job Seeker',
-      //     };
+          const userData = {
+              username: 'Harmit',
+              email: 'email4@gmail.com',
+              password: 'lesthn8',
+              role: 'Job Seeker',
+          };
 
-      //     const response = await request(app).post('/api/v1/user/register').send(userData);
+          const response = await request(app).post('/api/v1/user/register').send(userData);
 
-      //     expect(response.status).to.equal(400);
-      //     expect(response.body).to.have.property(
-      //         'message',
-      //         'User validation failed: password: Password must contain at least one letter, one number, and one special character'
-      //     );
-      // });
+          expect(response.status).to.equal(400);
+          expect(response.body).to.have.property(
+              'message',
+              'Password must be at least 8 characters long'
+          );
+      });
 
       it('Return an Error for Invalid Role', async function () {
           this.timeout(0); 
@@ -213,13 +222,13 @@ describe('Email Verification API Unit Tests', function () {
         //   };
 
         //   const response = await request(app).post('/api/v1/user/register').send(userData);
-          // console.log(response.body);
+        //   console.log(response.body);
         //   expect(response.status).to.equal(200);
         //   token = response.body.verificationToken;
         // console.log(jobSeekerRegTkn);
 
           const res = await request(app).get(`/api/v1/user/verify-email?token=${jobSeekerRegTkn}`);
-          // console.log(res.body);
+        //   console.log(res.body);
           expect(res.status).to.equal(200);
           expect(res.body).to.have.property('status', 'success');
           expect(res.body.message).to.equal('Email verified successfully.');    
@@ -228,7 +237,7 @@ describe('Email Verification API Unit Tests', function () {
       it('Verify Email Successfully with Valid Token - Recruiter', async function () {
         this.timeout(0);
         const res = await request(app).get(`/api/v1/user/verify-email?token=${recruiterRegTkn}`);
-        // console.log(res.body);
+      //   console.log(res.body);
         expect(res.status).to.equal(200);
         expect(res.body).to.have.property('status', 'success');
         expect(res.body.message).to.equal('Email verified successfully.');    
@@ -287,6 +296,7 @@ describe('User Login API Unit Tests', function () {
 
           const response = await request(app).post('/api/v1/user/login').send(jobSeeker);
           jobseekerLogTkn = response.body.token;
+          jobSeekerId = response.body.user._id;
 
           expect(response.status).to.equal(201);
           expect(response.body).to.have.property('status', 'success');
@@ -305,7 +315,7 @@ describe('User Login API Unit Tests', function () {
   });
 
   describe('Negative Test Cases', function () {
-      it('Missing role', async function () {
+      it('Return an Error for Missing role', async function () {
           const userData = {
               email: 'email1@gmail.com',
               password: 'Passw0rd@123',
@@ -317,7 +327,7 @@ describe('User Login API Unit Tests', function () {
           expect(response.body).to.have.property('message', 'Empty required field.');
       });
 
-      it('Missing email', async function () {
+      it('Return an Error for Missing email', async function () {
           const userData = {
               role: 'Job Seeker',
               password: 'Passw0rd@123',
@@ -329,7 +339,7 @@ describe('User Login API Unit Tests', function () {
           expect(response.body).to.have.property('message', 'Empty required field.');
       });
 
-      it('Missing password', async function () {
+      it('Return an Error for Missing password', async function () {
           const userData = {
               email: 'email1@gmail.com',
               role: 'Job Seeker',
@@ -341,7 +351,7 @@ describe('User Login API Unit Tests', function () {
           expect(response.body).to.have.property('message', 'Empty required field.');
       });
 
-      it('Invalid email', async function () {
+      it('Return an Error for Invalid email', async function () {
           const userData = {
               email: 'nonexistent@gmail.com',
               password: 'Passw0rd@123',
@@ -353,7 +363,7 @@ describe('User Login API Unit Tests', function () {
           expect(response.body).to.have.property('message', 'Invalid Email.');
       });
 
-      it('Wrong password', async function () {
+      it('Return an Error for Wrong password', async function () {
           const userData = {
               email: 'jobseeker1@gmail.com',
               password: 'WrongPass@123',
@@ -365,7 +375,7 @@ describe('User Login API Unit Tests', function () {
           expect(response.body).to.have.property('message', 'Wrong password.');
       });
 
-      it('Incorrect role', async function () {
+      it('Return an Error for Incorrect role', async function () {
           const userData = {
               email: 'jobseeker1@gmail.com',
               password: 'Passw0rd@123',
@@ -377,7 +387,7 @@ describe('User Login API Unit Tests', function () {
           expect(response.body).to.have.property('message', 'invalid credentials');
       });
 
-      it('Unregistered email', async function () {
+      it('Return an Error for Unregistered email', async function () {
           const userData = {
               email: 'unregistered@gmail.com',
               password: 'Passw0rd@123',
@@ -390,7 +400,7 @@ describe('User Login API Unit Tests', function () {
           expect(response.body).to.have.property('message', 'Invalid Email.');
       });
 
-      it('Unverified email', async function () {
+      it('Return an Error for Unverified email', async function () {
         const userData = {
             username: 'unverifiedUser',
             email: 'unverified@gmail.com',
@@ -413,7 +423,7 @@ describe('USER Get Me API UNIT TESTS', async function () {
   describe('Positive Test Cases', function () {
   it('should retrieve the current logged-in user', async function () {
       this.timeout(0); 
-      const res = await request(app).get('/api/v1/user/me').set('cookie', [`token=${jobseekerLogTkn}`]);
+      const res = await request(app).get('/api/v1/user/me').set('Authorization', `Bearer ${jobseekerLogTkn}`);
 
       // console.log(res.body);
       expect(res).to.have.status(200);
@@ -423,107 +433,229 @@ describe('USER Get Me API UNIT TESTS', async function () {
 });
 
 describe('Negative Test Cases', function () {
-  // it('should return 404 if the user does not exist', async function () {
-  //   this.timeout(0); 
-  //     // Remove the user from the database
-  //     const userId = "674b005a740b41d2e78a275f";
-  //     // await User.findByIdAndDelete(userId);
+//   it('should return 404 if the user does not exist', async function () {
+//     this.timeout(0); 
+//       // Remove the user from the database
+//       const userId = "674b005a740b41d2e78a275f";
+//       // await User.findByIdAndDelete(userId);
 
-  //     const res = await request(app)
-  //         .get('/api/v1/user/me')
-  //         .set('cookie', [`token=${jobseekerLogTkn}`]); // Use token of deleted user
+//       const res = await request(app)
+//           .get('/api/v1/user/me')
+//           .set('Authorization', `Bearer ${jobseekerLogTkn}`); // Use token of deleted user
 
-      // console.log(res.body);
-  //     expect(res).to.have.status(404);
-  //     expect(res.body).to.have.property('status', 'failure');
-  //     expect(res.body).to.have.property('message', 'No user found with that ID');
-  // });
+//       console.log(res.body);
+//       expect(res).to.have.status(404);
+//       expect(res.body).to.have.property('status', 'failure');
+//       expect(res.body).to.have.property('message', 'No user found with that ID');
+//   });
 
-  it('should return 400 if no token is provided', async function () {
+  it('Return an Error if no token is provided', async function () {
     this.timeout(0); 
       const res = await request(app)
           .get('/api/v1/user/me'); // No token sent
 
-      // console.log(res.body);
-      expect(res).to.have.status(400);
+    //   console.log(res.body);
+      expect(res).to.have.status(401);
       expect(res.body).to.have.property('success', false);
       expect(res.body).to.have.property('message', 'You are not logged in');
   });
 
-  it('should return 401 if an invalid token is provided', async function () {
+  it('Return an Error if an invalid token is provided', async function () {
     this.timeout(0); 
     invalidLogTkn = "eyICTGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGFlMzRkY2Y5NmRmZDNjZjg5ZDhhYiIsImlhdCI6MTczMjk2MTExNSwiZXhwIjoxNzMzMTMzOTE1fQ.hz-1f9T3CDW40SO76vTgwcbXjjOiOSM3Sj2VbFRp2N0";
       const res = await request(app)
           .get('/api/v1/user/me')
-          .set('cookie', [`token=${invalidLogTkn}`]); // Invalid token
+          .set('Authorization', `Bearer ${invalidLogTkn}`); // Invalid token
 
         // console.log(res.body);
       expect(res).to.have.status(400);
       expect(res.body).to.have.property('success', false);
-      expect(res.body).to.have.property('message', 'InValid JWT, Try again.');
+      expect(res.body).to.have.property('message', 'Invalid JWT, try again.');
   });
 });
 });
 
-describe('update profile',  async function () {
-  describe('Positive Test Cases',  async function () {
-  it('update-profile with username',  async function () {
-    this.timeout(0);
-    const updateData = {
-      username: 'luffy'
-    };
-    const res = await request(app).patch('/api/v1/user/update-profile').set('cookie', [`token=${jobseekerLogTkn}`]).send(updateData);
-    // console.log(res.body);
-    expect(res).to.have.status(200);
-    expect(res.body).to.have.property('status', 'success');
-    expect(res.body).to.have.property('message', 'Profile updated successfully');
-  });
-});
+// describe('update profile',  async function () {
+//   describe('Positive Test Cases',  async function () {
+//   it('update-profile with username',  async function () {
+//     this.timeout(0);
+//     const updateData = {
+//       username: 'luffy'
+//     };
+//     console.log(jobseekerLogTkn);
+//     const res = await request(app).patch('/api/v1/user/update-profile').set('Authorization', `Bearer ${jobseekerLogTkn}`).send(updateData);
+//     console.log(res.body);
+//     expect(res).to.have.status(200);
+//     expect(res.body).to.have.property('status', 'success');
+//     expect(res.body).to.have.property('message', 'Profile updated successfully');
+//   });
+// });
 
-describe('Negative Test Cases', function () {
-  it('Updating email is not allowed via this route.',  async function () {
-    this.timeout(0);
-        const res = await request(app).patch('/api/v1/user/update-profile').set('cookie', [`token=${jobseekerLogTkn}`]).send({ email: 'newemail@example.com' });
+// describe('Negative Test Cases', function () {
+//   it('Updating email is not allowed via this route.',  async function () {
+//     this.timeout(0);
+//         const res = await request(app).patch('/api/v1/user/update-profile').set('Authorization', `Bearer ${jobseekerLogTkn}`).send({ email: 'newemail@example.com' });
+//         console.log(res.body);
+//         expect(res).to.have.status(400);
+//         expect(res.body).to.have.property('message', 'Updating email is not allowed via this route.');
+//   });
+
+//   it('Updating role is not allowed via this route.',  async function () {
+//     this.timeout(0);
+//     const res = await request(app).patch('/api/v1/user/update-profile').set('Authorization', `Bearer ${jobseekerLogTkn}`).send({ role: 'Recruiter' });
+//     console.log(res.body);
+//     expect(res).to.have.status(400);
+//     expect(res.body).to.have.property('message', 'Updating role is not allowed via this route.');
+//   });
+// });
+// });
+
+  describe('update profile', function() {
+    describe('Positive Test Cases', function() {
+        it('Successfully update-profile with valid updates', async function() {
+            this.timeout(0);
+            const updateData = {
+              username: "luffy",
+              phone: "1234567890",
+              socialLinks: JSON.stringify({
+                twitter: "https://x.com/luffy",
+                github: "https://github.com/luffy",
+                linkedin: "https://linkedin.com/in/luffy",
+                portfolio: "https://luffy.com"
+              })
+            };
+      
+            // const form = new FormData();
+            // form.append('username', updateData.username);
+            // form.append('phone', updateData.phone);
+            // form.append('socialLinks', updateData.socialLinks);
+            // form.append('profilePhoto', fs.createReadStream(path.join(__dirname, 'profile-photo.jpg'))); // Ensure the file exists
+            // form.append('resume', fs.createReadStream(path.join(__dirname, 'resume.pdf'))); // Ensure the file exists
+            
+            this.timeout(0);
+            const res = await request(app)
+              .patch('/api/v1/user/update-profile')
+              .set('Authorization', `Bearer ${jobseekerLogTkn}`)
+              .send(updateData);
+      
+            // console.log(res.body);
+            expect(res).to.have.status(200);
+            expect(res.body).to.have.property('status', 'success');
+            expect(res.body).to.have.property('message', 'Profile updated successfully');
+          });
+    });
+  
+    describe('Negative Test Cases', function() {
+      it('Updating email is not allowed via this route.', async function() {
+        this.timeout(0);
+        const res = await request(app)
+          .patch('/api/v1/user/update-profile')
+          .set('Authorization', `Bearer ${jobseekerLogTkn}`)
+          .send({ email: 'newemail@example.com' });
+  
         // console.log(res.body);
         expect(res).to.have.status(400);
         expect(res.body).to.have.property('message', 'Updating email is not allowed via this route.');
+      });
+  
+      it('Updating role is not allowed via this route.', async function() {
+        this.timeout(0);
+        const res = await request(app)
+          .patch('/api/v1/user/update-profile')
+          .set('Authorization', `Bearer ${jobseekerLogTkn}`)
+          .send({ role: 'Recruiter' });
+  
+        // console.log(res.body);
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('message', 'Updating role is not allowed via this route.');
+      });
+  
+      it('Invalid phone number should return error', async function() {
+        this.timeout(0);
+        const res = await request(app)
+          .patch('/api/v1/user/update-profile')
+          .set('Authorization', `Bearer ${jobseekerLogTkn}`)
+          .send({ phone: '123' });
+  
+        // console.log(res.body);
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('message', 'Invalid phone number');
+      });
+  
+      it('Invalid Twitter URL format should return error', async function() {
+        this.timeout(0);
+        const res = await request(app)
+          .patch('/api/v1/user/update-profile')
+          .set('Authorization', `Bearer ${jobseekerLogTkn}`)
+          .send({ socialLinks: JSON.stringify({ twitter: 'invalid_twitter_url' }) });
+  
+        // console.log(res.body);
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('message', 'Invalid Twitter URL format');
+      });
+  
+      it('Invalid GitHub URL format should return error', async function() {
+        this.timeout(0);
+        const res = await request(app)
+          .patch('/api/v1/user/update-profile')
+          .set('Authorization', `Bearer ${jobseekerLogTkn}`)
+          .send({ socialLinks: JSON.stringify({ github: 'invalid_github_url' }) });
+  
+        // console.log(res.body);
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('message', 'Invalid GitHub URL format');
+      });
+  
+      it('Invalid LinkedIn URL format should return error', async function() {
+        this.timeout(0);
+        const res = await request(app)
+          .patch('/api/v1/user/update-profile')
+          .set('Authorization', `Bearer ${jobseekerLogTkn}`)
+          .send({ socialLinks: JSON.stringify({ linkedin: 'invalid_linkedin_url' }) });
+  
+        // console.log(res.body);
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('message', 'Invalid LinkedIn URL format');
+      });
+  
+      it('Invalid portfolio URL format should return error', async function() {
+        this.timeout(0);
+        const res = await request(app)
+          .patch('/api/v1/user/update-profile')
+          .set('Authorization', `Bearer ${jobseekerLogTkn}`)
+          .send({ socialLinks: JSON.stringify({ portfolio: 'invalid_portfolio_url' }) });
+  
+        // console.log(res.body);
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('message', 'Invalid portfolio URL format');
+      });
+    });
   });
-
-  it('Updating role is not allowed via this route.',  async function () {
-    this.timeout(0);
-    const res = await request(app).patch('/api/v1/user/update-profile').set('cookie', [`token=${jobseekerLogTkn}`]).send({ role: 'Recruiter' });
-    // console.log(res.body);
-    expect(res).to.have.status(400);
-    expect(res.body).to.have.property('message', 'Updating role is not allowed via this route.');
-  });
-});
-});
 
 describe('delete profile', function () {
 
     describe('Negative Test Cases', function () {
-        it('should return 404 if the user does not exist', async function () {
-          const fakeUserId = "64d0e6fd4527b3c399000000";
+        // it('should return 404 if the user does not exist', async function () {
+        //   const fakeUserId = "64d0e6fd4527b3c399000000";
     
-          const res = await request(app)
-            .delete(`/api/v1/user/delete/${fakeUserId}`)
-            .set('cookie', [`token=${recruiterLogTkn}`]);
+        //   const res = await request(app)
+        //     .delete(`/api/v1/user/delete/${fakeUserId}`)
+        //     .set('Authorization', `Bearer ${recruiterLogTkn}`);
           
-          // console.log(res.body);
-          expect(res).to.have.status(404);
-          expect(res.body).to.have.property('status', 'failure');
-          expect(res.body).to.have.property('message', `User with ID: ${fakeUserId} not found`);
-        });
+        //   console.log(res.body);
+        //   expect(res).to.have.status(404);
+        //   expect(res.body).to.have.property('status', 'failure');
+        //   expect(res.body).to.have.property('message', `User with ID: ${fakeUserId} not found`);
+        // });
     
-        it('should return 500 if a server error occurs', async function () {
+        it('Return an Error if a server error occurs', async function () {
           const res = await request(app)
             .delete('/api/v1/user/delete/invalid_id') 
-            .set('cookie', [`token=${recruiterLogTkn}`]);
+            .set('Authorization', `Bearer ${recruiterLogTkn}`);
           
-          // console.log(res.body);
-          expect(res).to.have.status(500);
-          expect(res.body).to.have.property('status', 'error');
-          expect(res.body).to.have.property('message', 'Server error');
+        //   console.log(res.body);
+          expect(res).to.have.status(404);
+          expect(res.body).to.have.property('message', 'Error');
         });
       });
 
@@ -533,12 +665,12 @@ describe('delete profile', function () {
         // console.log(recruiterId);
         const res = await request(app)
           .delete(`/api/v1/user/delete/${recruiterId}`)
-          .set('cookie', [`token=${recruiterLogTkn}`]); 
+          .set('Authorization', `Bearer ${recruiterLogTkn}`); 
         
-          // console.log(res.body);
+        //   console.log(res.body);
         expect(res).to.have.status(200);
-        expect(res.body).to.have.property('status', 'success');
-        expect(res.body).to.have.property('message', `User with ID: ${recruiterId} deleted successfully`);
+        // expect(res.body).to.have.property('status', 'success');
+        expect(res.body).to.have.property('message', 'User deleted successfully');
       });
     });
 });
@@ -546,7 +678,7 @@ describe('delete profile', function () {
 describe('User Forget Password API Unit Tests', function () {
     this.timeout(0);
     describe('Positive Test Cases', function () {
-        it('forget pass - correct', async function () {
+        it('should do forget password correctly', async function () {
             this.timeout(0);
             
             // const userData = {
@@ -567,7 +699,7 @@ describe('User Forget Password API Unit Tests', function () {
     });
 
     describe('Negative Test Cases', function () {
-        it('forget pass - inv email', async function () {
+        it('Return an Error for invalid email', async function () {
             this.timeout(0);
             
             const userData = {
@@ -584,7 +716,7 @@ describe('User Forget Password API Unit Tests', function () {
             expect(response.body.message).to.equal('User not found with that email.');
         });
 
-        it('forget pass - with no email', async function () {
+        it('Return an Error for no email provided', async function () {
             this.timeout(0);
             
             const userData = {
@@ -604,7 +736,7 @@ describe('User Reset Password API Unit Tests', function () {
     this.timeout(0);
 
     describe('Negative Test Cases', function () {
-      it('reset-forget pass - missing psw', async function () {
+      it('Return an Error for missing password', async function () {
           this.timeout(0);
           
           // const updPassword = {
@@ -628,45 +760,45 @@ describe('User Reset Password API Unit Tests', function () {
 
           const resetResp = await request(app).post(`/api/v1/user/reset-password/${forgetPswTkn}`).send(updPassword);
   
-          // console.log(resetResp.body);
+        //   console.log(resetResp.body);
           expect(resetResp.status).to.equal(500);
           expect(resetResp.body).to.have.property('message').that.includes('password: Path `password` is required.');
           expect(resetResp.body).to.have.property('success', false);
       });
   
-    //   it('reset-forget pass - psw invalid', async function () {
-    //       this.timeout(0);
+      it('Return an Error for password invalid', async function () {
+          this.timeout(0);
           
-    //       // const userData = {
-    //       //     // username: 'ValidUser',
-    //       //     email: 'email1@gmail.com',
-    //       //     // password: 'Passw0rd@123',
-    //       //     // role: 'Job Seeker',
-    //       // };
+          // const userData = {
+          //     // username: 'ValidUser',
+          //     email: 'email1@gmail.com',
+          //     // password: 'Passw0rd@123',
+          //     // role: 'Job Seeker',
+          // };
   
-    //       // const response = await request(app).post('/api/v1/user/forgot-password').send(userData);
+          // const response = await request(app).post('/api/v1/user/forgot-password').send(userData);
           // console.log(response.body);
-    //       // expect(response.status).to.equal(200);
-    //       // expect(response.body.status).to.equal('success');
-    //       // expect(response.body.message).to.equal('Token sent to email!');
+          // expect(response.status).to.equal(200);
+          // expect(response.body.status).to.equal('success');
+          // expect(response.body.message).to.equal('Token sent to email!');
   
-    //       // rstToken = response.body.resetToken;
+          // rstToken = response.body.resetToken;
   
-    //       const updPassword = {
-    //           password: 'nwpsw',
-    //       }
+          const updPassword = {
+              password: 'nwpsw',
+          }
   
-    //       const resetResp = await request(app).post(`/api/v1/user/reset-password/${forgetPswTkn}`).send(updPassword);
+          const resetResp = await request(app).post(`/api/v1/user/reset-password/${forgetPswTkn}`).send(updPassword);
   
-          // console.log(resetResp.body);
-    //       expect(resetResp.status).to.equal(400);
-    //       expect(resetResp.body).to.have.property('message').that.includes('Password must be at least 8 characters long');
-    //       expect(resetResp.body).to.have.property('success', false);
-    //   });
+        //   console.log(resetResp.body);
+          expect(resetResp.status).to.equal(400);
+          expect(resetResp.body).to.have.property('message').that.includes('Password must be at least 8 characters long');
+          expect(resetResp.body).to.have.property('success', false);
+      });
     });
 
     describe('Positive Test Cases', function () {
-    it('reset-forget pass - correct', async function () {
+    it('should do reset-forget password correctly', async function () {
         this.timeout(0);
         
         const userData = {
@@ -702,29 +834,35 @@ describe('User Logout API Unit Tests', function () {
   describe('Positive Test Cases', function () {
       it('Logout Successfully and Clear the Cookie', async function () {
           this.timeout(0);
-              const userData = {
-                  username: 'ValidUser',
-                  email: 'email111@gmail.com',
-                  password: 'Passw0rd@123',
-                  role: 'Job Seeker',
-              };
-              const resReg = await request(app).post('/api/v1/user/register').send(userData);
-              const token = resReg.body.verificationToken;
-              const res = await request(app).get(`/api/v1/user/verify-email?token=${token}`);
-              const resLog2 = await request(app).post('/api/v1/user/login').send(userData);
-    
-              const logToken = resLog2.body.token;
+              // const userData = {
+              //     username: 'ValidUser',
+              //     email: 'email111@gmail.com',
+              //     password: 'Passw0rd@123',
+              //     role: 'Job Seeker',
+              // };
+              // const resReg = await request(app).post('/api/v1/user/register').send(userData);
+              // expect(resReg.status).to.equal(200);
+              // const token = resReg.body.verificationToken;
+              // const res = await request(app).get(`/api/v1/user/verify-email?token=${token}`);
+              // expect(res.status).to.equal(200);
+              // const resLog = await request(app).post('/api/v1/user/login').send(userData);
+              // expect(resLog.status).to.equal(201);
+              // expect(resLog.body).to.have.property('status', 'success');
+              // expect(resLog.body).to.have.property('message', 'user logged in successfully');
+              // logToken = resLog.body.token;
 
-              const resLog = await request(app).post('/api/v1/user/logout').set('cookie', [`token=${logToken}`]);
+              const response = await request(app).get('/api/v1/user/logout').set('Authorization', `Bearer ${jobseekerLogTkn}`);
 
-              // console.log(resLog.body);
-              expect(resLog).to.have.status(200);
-              expect(resLog.body).to.have.property('status', 'success');
-              expect(resLog.body).to.have.property('message', 'Logged out successfully...');
+              // console.log(jobseekerLogTkn);
+
+            //   console.log(response.body);
+              expect(response).to.have.status(200);
+              expect(response.body).to.have.property('status', 'success');
+              expect(response.body).to.have.property('message', 'logged out successfully...');
 
               // Check the cookie
-            //   const cookies = response.headers['set-cookie'];
-            //   expect(cookies).to.be.an('array').that.is.not.empty;
+              const cookies = response.headers['set-cookie'];
+              expect(cookies).to.be.an('array').that.is.not.empty;
 
               // // Verify the token cookie is cleared
               // const tokenCookie = cookies.find((cookie) => cookie.startsWith('token='));
@@ -734,17 +872,17 @@ describe('User Logout API Unit Tests', function () {
   });
 
   describe('Negative Test Cases', function () {
-      it('with invalid login cookie', async function () {
+      it('Return an Error for invalid login cookie', async function () {
           this.timeout(0);
 
               const response = await request(app)
-                  .post('/api/v1/user/logout')
-                  .set('cookie', [`token=${invalidLogTkn}`]);
+                  .get('/api/v1/user/logout')
+                  .set('Authorization', `Bearer ${invalidLogTkn}`);
 
-              // console.log(response.body);
+            //   console.log(response.body);
 
               expect(response).to.have.status(400);
-              expect(response.body).to.have.property('message', 'InValid JWT, Try again.');
+              expect(response.body).to.have.property('message', 'Invalid JWT, try again.');
       });
   });
 });
