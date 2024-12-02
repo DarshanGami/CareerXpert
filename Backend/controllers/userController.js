@@ -54,6 +54,12 @@ const register = catchAsync(async (req, res, next) => {
       return next(new AppError("Empty required field.", 400));
     }
 
+    if(username){
+      if(username.length<3 || username.length>30){
+        return next(new AppError("Username must be 3 to 30 characters", 400))
+      }
+    }
+
     if (email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format validation
       if (!emailRegex.test(email)) {
@@ -211,6 +217,7 @@ const forgotPassword = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     message: "Token sent to email!",
+    resetToken,
   });
 });
 
@@ -249,9 +256,9 @@ const getMe = catchAsync(async (req, res, next) => {
     user.jobPreference = JSON.parse(user.jobPreference);
   }
 
-  if (!user) {
-    return next(new AppError("No user found with that ID", 404));
-  }
+  // if (!user) {
+  //   return next(new AppError("No user found with that ID", 404));
+  // }
 
   res.status(200).json({
     status: "success",
@@ -396,9 +403,43 @@ const updateProfile = [
       "passwordResetToken",
       "passwordResetExpires",
     ];
-    sensitiveFields.forEach((field) => delete updateData[field]);
 
+    sensitiveFields.forEach(field => {
+      if (updateData[field] !== undefined) {
+          sensitiveFields.forEach(field => delete updateData[field]);
+          return next(new AppError(`Updating ${field} is not allowed via this route.`, 400));
+      }
+    });
 
+    if (updateData.skills && Array.isArray(updateData.skills)) {
+      const skillPattern = /\d/; // Checks for any numeric characters
+      for (let skill of updateData.skills) {
+        if (skill && skillPattern.test(skill)) {
+          return next(new AppError("Skill names must not contain numeric values", 400));
+        }
+      }
+    }
+    
+    if(updateData.username){
+      if(updateData.username.length<3 || updateData.username.length>30){
+        return next(new AppError("Username must be 3 to 30 characters", 400))
+      }
+    }
+
+    if(updateData.aboutMe){
+      if(updateData.aboutMe.length>500){
+        return next(new AppError("About can not be of greater than 500 characters", 400));
+      }
+    }
+
+    if (updateData.city) {
+      const cityNamePattern = /^[A-Za-z\s]+$/; // Only allows letters and spaces
+      if (!cityNamePattern.test(updateData.city)) {
+        return next(new AppError("City name must only contain alphabetic characters and spaces", 400));
+      }
+    }
+
+    
     if (updateData.phone) {
       const phoneRegex = /^\d{10}$/;
       if (!phoneRegex.test(updateData.phone)) {
@@ -437,7 +478,7 @@ const updateProfile = [
       const portfolioRegex = /^(https?:\/\/)(www\.)?([a-zA-Z0-9-]+)(\.[a-zA-Z]{2,})(\/[\w-./?%&=]*)?$/;
       if (!portfolioRegex.test(socialLinks.portfolio)) {
         console.log('error in portfolio url')
-        return next(new AppError("Invalid poerfolio URL format", 400));
+        return next(new AppError("Invalid portfolio URL format", 400));
       }
     }
 
@@ -493,9 +534,9 @@ const updateProfile = [
       runValidators: true,
     });
 
-    if (!user) {
-      return next(new AppError("User not found", 404));
-    }
+    // if (!user) {
+    //   return next(new AppError("User not found", 404));
+    // }
 
     res.status(200).json({
       status: "success",
@@ -512,11 +553,17 @@ const deleteUserbyId = async (req, res) => {
     // Destructure the 'id' parameter from the request
     const { id } = req.params;
 
-    console.log(id);
+    // console.log(id);
 
     // Attempt to delete the user from the database using their ID
     await User.deleteOne({ _id: id });
 
+  //   if (result.deletedCount === 0) {
+  //     return res.status(404).json({
+  //         status: 'failure',
+  //         message: `User with ID: ${id} not found`,
+  //     });
+  // }
     // Send a success response if the user is deleted
     return res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
