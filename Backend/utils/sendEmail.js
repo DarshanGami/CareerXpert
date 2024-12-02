@@ -13,7 +13,8 @@ const transporter = nodemailer.createTransport({
 });
 
 exports.sendVerificationEmail = (email, token) => {
-    const verificationUrl = `https://careerxpert.onrender.com/api/v1/user/verify-email?token=${token}`;
+    const verificationUrl = `http://localhost:5001/api/v1/user/verify-email?token=${token}`;
+    // https://careerxpert.onrender.com
     
     return transporter.sendMail({
        from: `CareerXpert ${process.env.EMAIL_USER}`,

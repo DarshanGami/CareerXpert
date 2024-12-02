@@ -3,9 +3,10 @@ const { catchAsync } = require("../middlewares/catchAsync.js");
 const { Review } = require("../models/reviewModel.js");
 const { Company } = require("../models/companyModel.js");
 
-const addReview = catchAsync(async (req, res, next) => {
+const addReview = catchAsync(async (req, res, next) => {  
+
     const existingReview = await Review.findOne({
-        company: req.params.companyId,
+        company: req.params.id,
         user: req.user._id,
     });
 
@@ -14,7 +15,7 @@ const addReview = catchAsync(async (req, res, next) => {
     }
 
     const review = new Review({
-        company: req.params.companyId,
+        company: req.params.id,
         user: req.user._id,
         rating: req.body.rating,
         reviewText: req.body.reviewText,
@@ -34,8 +35,8 @@ const addReview = catchAsync(async (req, res, next) => {
 });
 
 const getReviews = catchAsync(async (req, res, next) => {
-    const reviews = await Review.find({ company: req.params.companyId })
-        .populate('user', 'username')
+    const reviews = await Review.find({ company: req.params.id })
+        .populate('user')
         .populate('company', 'name');
 
     res.status(200).json({

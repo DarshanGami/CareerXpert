@@ -27,12 +27,11 @@ const Home_main = (props) => {
         {/* Discover Section */}
         <div className="flex flex-row gap-4  items-center mb-12 mx-auto justify-center">
           <div className="mt-4">
-            <h1 className="text-4xl font-bold text-blue-700">
-              Discover Your Path
+            <h1 className="text-5xl font-bold text-blue-700">
+              Welcome to CareerXpert : {")"}
             </h1>
             <p className="text-lg text-gray-600 mt-2">
-              Explore global opportunities to learn, showcase skills,and get
-              hired by top companies.
+              Your journey to the perfect career starts here!
             </p>
           </div>
           <div className="flex flex-row gap-4 items-start">
@@ -96,7 +95,7 @@ const Home_main = (props) => {
               <h1 className="text-4xl font-bold text-blue-700">
                 Browse Job / Internship That’s Right For You!
               </h1>
-              <p className="text-lg text-gray-600 mt-2">
+              <p className="text-lg text-gray-600 mt-2 text-center">
                 Find a role that fits your career aspirations.
               </p>
             </div>

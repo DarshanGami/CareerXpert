@@ -191,37 +191,48 @@ const getCompanyJobs = catchAsync(async (req, res, next) => {
 
 // Update job
 const updateJob = catchAsync(async (req, res, next) => {
+  console.log(req.body, "[BODY]");
 
   const { deadline } = req.body;
-  if (new Date(deadline) < new Date()) {
+
+  // Validate deadline
+  const deadlineDate = new Date(deadline);
+  if (isNaN(deadlineDate)) {
+    return next(new AppError("Invalid date format for deadline", 400));
+  }
+  if (deadlineDate < new Date()) {
     return next(new AppError("Deadline cannot be in the past", 400));
   }
 
   const updateData = { ...req.body };
 
-  if (updateData.title.length > 50) {
-    return next(new AppError("title can't be exceed 50 characters", 400));
+  // Validate title length
+  if (updateData.title && updateData.title.length > 50) {
+    return next(new AppError("Title can't exceed 50 characters", 400));
   }
 
-  if (updateData.description.length > 1000) {
-    return next(new AppError("description can't be exceed 1000 characters", 400));
+  // Validate description length
+  if (updateData.description && updateData.description.length > 1000) {
+    return next(new AppError("Description can't exceed 1000 characters", 400));
   }
 
-  if(updateData.requirements){
-    if (updateData.requirements.length > 1000) {
-      return next(new AppError("requirements can't be exceed 1000 characters", 400));
-    }
+  // Validate requirements length
+  if (updateData.requirements && updateData.requirements.length > 1000) {
+    return next(new AppError("Requirements can't exceed 1000 characters", 400));
   }
 
-  if(updateData.perks){
-    if (updateData.perks.length > 1000) {
-      return next(new AppError("perks can't be exceed 1000 characters", 400));
-    }
+  // Validate perks length
+  if (updateData.perks && updateData.perks.length > 1000) {
+    return next(new AppError("Perks can't exceed 1000 characters", 400));
   }
 
+  // Create updateData with only allowed fields
+  const updateJobData = { ...req.body };
+
+  // Perform the update
   const job = await Job.findOneAndUpdate(
     { _id: req.params.id, created_by: req.user._id },
-    req.body,
+    updateJobData,
     {
       new: true,
       runValidators: true,
@@ -237,14 +248,13 @@ const updateJob = catchAsync(async (req, res, next) => {
     );
   }
 
-
-
   res.status(200).json({
     status: "success",
     message: "Job updated successfully",
     job,
   });
 });
+
 
 // Delete job
 const deleteJob = catchAsync(async (req, res, next) => {

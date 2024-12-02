@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, useLocation } from "react-router-dom";
 import Home from "./components/ui/Home";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
@@ -28,8 +28,6 @@ function App() {
   const [companyData, setcompanyData] = useState({});
   const [currUser, setCurrUser] = useState();
 
-  console.log(BASE_URL, "[BASSE]");
-  
   // Function to retrieve token from localStorage
   const getToken = () => {
     return localStorage.getItem("TOKEN");
@@ -67,6 +65,7 @@ function App() {
   };
 
   useEffect(() => {
+
     const func = async () => {
       let user = await fetchUserData();
       setCurrUser(user);

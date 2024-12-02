@@ -141,7 +141,7 @@ const ApplyJobDcard = (props) => {
   return (
     <div>
       <Navbar user={props?.user} />
-      <div className="p-8 bg-gray-100 min-h-screen">
+      <div className="p-8 bg-blue-50 min-h-screen">
         <div className="bg-white shadow-lg rounded-lg p-6 flex items-start space-x-4 mb-4">
           <img
             src={currentJobDetail?.company?.logo}
@@ -149,13 +149,13 @@ const ApplyJobDcard = (props) => {
             className="object-cover mr-3 w-16 h-16 rounded-full"
           />
           <div className="flex-grow">
-            <h3 className="text-lg font-bold text-blue-700">
+            <h3 className="text-3xl font-bold text-blue-700">
               {currentJobDetail?.title}
             </h3>
             {/* Link to the company page */}
             <Link
               to={`/companydescription?company_id=${currentJobDetail?.company?._id}&role=${role}`}
-              className="text-gray-800 hover:text-blue-500"
+              className="text-blue-500 hover:text-red-500 font-bold"
             >
               {currentJobDetail?.company?.name}
             </Link>

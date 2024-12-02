@@ -89,22 +89,22 @@ const JobList = (props) => {
       <div className="bg-white py-12 text-center">
         <div className="container mx-auto">
           <div className="flex justify-center items-center mb-4">
-            <img
+            {/* <img
               src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
               alt="Google Logo"
               className=" object-fill w-16 h-16 mr-3"
-            />
-            <p className="text-2xl font-semibold text-gray-800">
-              Google Careers
+            /> */}
+            <p className="text-3xl font-semibold text-800">
+                Welcome to our platform
             </p>
           </div>
           <h1 className="text-4xl font-bold">
-            Search, Apply & Get Your{" "}
-            <span className="text-blue-600">Dream Job at Google</span>
+            Easily Post Jobs to Attract{" "}
+            <span className="text-blue-600 ">Top Talent!</span>
           </h1>
           <p className="text-lg mt-4 text-gray-600">
-            Join one of the world's leading companies and start your journey to
-            a successful career.
+            Fill out the form to share your job openings and find the best candidates for your company. <br/>
+            Take the first step toward building a great team!
           </p>
         </div>
       </div>
@@ -125,31 +125,31 @@ const JobList = (props) => {
             <tr>
               <th
                 scope="col"
-                className="px-20 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-20 py-3 text-xs font-medium text-black font-bold uppercase tracking-wider"
               >
                 Domain
               </th>
               <th
                 scope="col"
-                className="px-20 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-20 py-3 text-xs font-medium text-black font-bold uppercase tracking-wider"
               >
                 Timing
               </th>
               <th
                 scope="col"
-                className="px-20 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-20 py-3 text-xs font-medium text-black font-bold uppercase tracking-wider"
               >
                 Location
               </th>
               <th
                 scope="col"
-                className="px-20 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-20 py-3 text-xs font-medium text-black font-bold uppercase tracking-wider"
               >
                 Job title
               </th>
               <th
                 scope="col"
-                className="px-20 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-20 py-3 text-xs font-medium text-black font-bold uppercase tracking-wider"
               >
                 Actions
               </th>
@@ -165,7 +165,7 @@ const JobList = (props) => {
                 <tr
                   onClick={(e) => route(job._id)} // Call route function when the row is clicked
                   key={index}
-                  className="hover:bg-gray-50 cursor-pointer" // Add cursor-pointer for better UX
+                  className="hover:bg-blue-50 cursor-pointer" // Add cursor-pointer for better UX
                 >
                   <td className="px-20 py-4 whitespace-nowrap text-sm text-gray-900">
                     {job.domain}

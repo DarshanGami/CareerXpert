@@ -3,7 +3,7 @@ import React from "react";
 
 const CompanyD_1 = (props) => {
   return (
-    <div className="bg-blue-500 rounded-lg shadow p-4 w-[250px]">
+    <div className="bg-blue-300 rounded-lg shadow p-4 w-[250px]">
       <h3 className="text-lg font-bold text-black">{props.title}</h3>
       <p className="text-black">{props.company}</p>
       <p className="text-black mt-2">{props.daysLeft} Left</p>

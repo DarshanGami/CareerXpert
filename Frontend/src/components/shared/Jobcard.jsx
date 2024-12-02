@@ -5,7 +5,7 @@ const Jobcard = (props) => {
 
   const formatSalaryToLPA = `${(props?.salary / 100000).toFixed(2)} LPA`;
   return (
-    <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 hover:bg-blue-300">
+    <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 hover:bg-blue-100">
       <div className="flex items-center mb-4">
         <img
           src={props?.company?.logo}
@@ -20,7 +20,7 @@ const Jobcard = (props) => {
       <h2 className="text-xl font-bold text-gray-800 mb-2">{props?.title}</h2>
       <p className="text-sm text-gray-600 mb-4">{props?.description}</p>
       <div className="flex items-center space-x-3 mb-4 text-sm">
-        <span className="bg-blue-100 text-blue-700 py-1 px-3 rounded-full">
+        <span className="bg-red-100 text-red-700 py-1 px-3 rounded-full">
           {props?.timing}
         </span>
         <span className="bg-purple-100 text-purple-700 py-1 px-3 rounded-full">

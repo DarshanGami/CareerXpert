@@ -28,6 +28,7 @@ function Login() {
       localStorage.setItem("ROLE", role);
       
       navigate("/"); // Redirect to home page upon successful login
+      window.location.reload()
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
     } finally {

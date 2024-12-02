@@ -107,9 +107,9 @@ const CompanyList = (props) => {
 
       <div className="flex flex-col min-h-screen">
         {/* Main Content */}
-        <main className="flex-grow">
-          <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Your Companies</h1>
+        <main className="bg-blue-50 flex-grow">
+          <div className=" container mx-auto p-4">
+          <h1 className="text-2xl font-bold mb-4 text-center">Your Companies</h1>
 
             <div className={"grid gap-4 grid-cols-1 mx-10"}>
               {companies.map((company) => (
@@ -135,7 +135,7 @@ const CompanyList = (props) => {
                     {/* <Link to={`/UpdateCompany/${company._id}`}> */}
                     <button
                       onClick={(e) => handleEdit(e, company._id)}
-                      className="bg-yellow-500 text-white px-4 py-2 rounded"
+                      className="bg-blue-500 text-white px-4 py-2 rounded"
                     >
                       Edit
                     </button>

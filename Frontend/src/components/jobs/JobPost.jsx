@@ -56,15 +56,22 @@ const JobPost = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
+  
     try {
+      // Ensure jobDetails, company_id, and token are valid
+      if (!jobDetails || !company_id || !token) {
+        toast.error("Missing required information.");
+        return;
+      }
+  
       const response = await axios.post(
         `${BASE_URL}/api/v1/job/${company_id}`,
         jobDetails,
         {
-          // withCredentials: true
           headers: {
             Authorization: `Bearer ${token}`,
+            // Uncomment if needed for cookies/sessions
+            // withCredentials: true 
           },
         }
       );
@@ -72,12 +79,16 @@ const JobPost = (props) => {
       navigate(`/joblist?company_id=${company_id}`);
     } catch (error) {
       console.log(error, "ERROR");
-
-      toast.error(error.response?.data?.message || "Error posting job");
+  
+      // Handling cases where error.response might be undefined
+      const errorMessage =
+        error.response?.data?.message || "Error posting job. Please try again.";
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
+  
 
   const handleUpdate = async (e) => {
     e.preventDefault();

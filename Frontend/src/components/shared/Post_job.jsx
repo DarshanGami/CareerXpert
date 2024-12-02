@@ -6,7 +6,7 @@ const Post_job = (props) => {
 
     const navigate = useNavigate();
     return (
-        <div className="flex justify-between items-center p-6 border rounded-lg shadow-lg w-full max-w-3xl mx-auto bg-white">
+        <div className="flex justify-between items-center p-6 border rounded-lg shadow-lg w-full max-w-3xl mx-auto bg-gradient-to-b from-blue-600 to-green-300">
             <div className="flex-1">
                 <h2 className="text-2xl font-semibold mb-2">Host Now</h2>
                 <ul className="text-gray-600 space-y-1 mb-4">
