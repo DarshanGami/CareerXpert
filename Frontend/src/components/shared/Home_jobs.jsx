@@ -77,7 +77,7 @@ const Home_jobs = (props) => {
   return (
     <div>
       <Navbar user={props?.user} />
-      <div className="flex gap-10 min-h-screen">
+      <div className="bg-blue-50 flex gap-10 min-h-screen">
         {/* Sidebar for filters */}
         <div className="flex flex-col bg-gray-100 p-4 space-y-4">
           {/* Search Bar */}

@@ -182,38 +182,37 @@ console.log(reviews, "");
 
         {/* Show all reviews before review submit section */}
         <div className="mt-8">
-  <h2 className="text-3xl font-semibold text-gray-800 mb-6">Reviews</h2>
+        <h2 className="text-3xl font-semibold text-gray-800 mb-6">Reviews</h2>
 
-  {reviews?.length === 0 ? (
-    <p className="text-gray-500">No reviews yet.</p>
-  ) : (
-    <div>
-      {reviews.map((review, index) => (
-        <div key={index} className="bg-white shadow-md rounded-lg p-6 mb-6 border border-gray-200">
-          <div className="flex items-center mb-4">
-            <img
-              src={review?.user?.profilePhoto?.url || 'https://via.placeholder.com/40'}
-              alt={review?.user?.username}
-              className="w-10 h-10 rounded-full mr-4"
-            />
-            <div>
-              <h3 className="text-xl font-semibold text-gray-800">{review?.user?.username}</h3>
-              <div className="flex items-center text-yellow-500">
-                {/* Replace with your actual rating component */}
-                <span className="text-sm">⭐⭐⭐⭐⭐</span>
-                <span className="ml-2 text-sm text-gray-400">({review?.rating})</span>
+        {reviews?.length === 0 ? (
+          <p className="text-gray-500">No reviews yet.</p>
+        ) : (
+          <div>
+            {reviews.map((review, index) => (
+              <div key={index} className="bg-white shadow-md rounded-lg p-6 mb-6 border border-gray-200">
+                <div className="flex items-center mb-4">
+                  <img
+                    src={review?.user?.profilePhoto?.url || 'https://via.placeholder.com/40'}
+                    alt={review?.user?.username}
+                    className="w-10 h-10 rounded-full mr-4"
+                  />
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800">{review?.user?.username}</h3>
+                    <div className="flex items-center text-yellow-500">
+                      {/* Replace with your actual rating component */}
+                      <span className="text-sm">⭐⭐⭐⭐⭐</span>
+                      <span className="ml-2 text-sm text-gray-400">({review?.rating})</span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-gray-700">{review?.reviewText}</p>
               </div>
-            </div>
+            ))}
           </div>
-          <p className="text-gray-700">{review?.reviewText}</p>
-        </div>
-      ))}
-    </div>
-  )}
-</div>
+        )}
+      </div>
 
-
-        {role !== "Recruiter" && <ReviewSection />}
+      {role !== "Recruiter" && <ReviewSection />}
       </div>
     </>
   );

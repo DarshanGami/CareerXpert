@@ -1,5 +1,4 @@
 import React from "react";
-import google from "./google.png";
 import { Link, useNavigate } from "react-router-dom";
 
 const JobApplicationCard = (props) => {
@@ -15,7 +14,7 @@ const JobApplicationCard = (props) => {
       className="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4 mb-4 cursor-pointer"
     >
       <img
-        src={google}
+        src={props.logo}
         alt={`${props.companyName} logo`}
         className="object-cover mr-3 w-16 h-16 rounded-full"
       />

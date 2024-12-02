@@ -6,7 +6,7 @@ const New_user = () => {
   return (
     <div className='sticky top-0 z-10'>
 
-<div className='bg-white sticky z-10 top-0 my-2'>
+    <div className='bg-white sticky z-10 top-0 my-2'>
         <div className='flex items-center justify-between mx-auto max-w-7xl size_1:flex-row gap-5 flex-col h-16'>
           <div>
             <h1 className='text-2xl font-bold'>Career<span className='text-blue-600'>Xpert</span></h1>

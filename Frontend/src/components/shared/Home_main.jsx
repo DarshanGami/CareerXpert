@@ -21,13 +21,13 @@ import sprikler from "./sprinklr.jpg";
 
 const Home_main = (props) => {
   return (
-    <div className=" min-h-screen flex flex-col">
+    <div className="bg-blue-50 min-h-screen flex flex-col">
       {/* Main Content */}
       <main className="flex-row mt-4 p-6 justify-center items-center">
         {/* Discover Section */}
         <div className="flex flex-row gap-4  items-center mb-12 mx-auto justify-center">
           <div className="mt-4">
-            <h1 className="text-5xl font-bold text-blue-700">
+            <h1 className="text-5xl font-bold mr-10 text-blue-700">
               Welcome to CareerXpert : {")"}
             </h1>
             <p className="text-lg text-gray-600 mt-2">

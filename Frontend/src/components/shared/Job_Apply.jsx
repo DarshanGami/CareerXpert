@@ -49,12 +49,12 @@ const Job_Apply = (props) => {
     func();
   }, []);
 
+  
   return (
     <div>
       <Navbar user={props?.user} />
-
-      <div className="min-h-screen p-8">
-        <h1 className="text-4xl font-bold text-blue-700 mb-8">
+      <div className="bg-blue-50 min-h-screen p-8">
+        <h1 className="text-4xl font-bold text-blue-700 mb-8 text-center">
           My Job Applications
         </h1>
         {myJobs?.map((job, index) => {
@@ -69,7 +69,7 @@ const Job_Apply = (props) => {
           return (
             <Link
               to={`/applyjobdcard?job_id=${job?.job?._id}&role=${props?.user?.role}`}
-            >
+            > 
               <JobApplicationCard
                 key={index}
                 logo={job?.job?.company?.logo}
@@ -83,7 +83,6 @@ const Job_Apply = (props) => {
           );
         })}
       </div>
-
       <Footer></Footer>
     </div>
   );

@@ -13,7 +13,9 @@ const User = (props) => {
           {/* Logo Section */}
           <div>
             <h1 className="text-2xl font-bold">
-              Career<span className="text-blue-600">Xpert</span>
+              <Link to="/" className="text-inherit">
+                Career<span className="text-blue-600">Xpert</span>
+              </Link>
             </h1>
           </div>
 

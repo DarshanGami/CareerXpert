@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 const ApplyJobDcard = (props) => {
   var BASE_URL = import.meta.env.VITE_BACKEND_HOST;
   const [currentJobDetail, setCurrentJobDetail] = useState(null);
+  const [isApplied, setIsApplied] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
 
   const route = () => {
@@ -162,17 +163,17 @@ const ApplyJobDcard = (props) => {
             <p className="text-gray-500">{currentJobDetail?.location}</p>
             <p className="text-gray-400">Updated On: {updatedDate}</p>
           </div>
-          {role != "Recruiter" && (
-            <button
-              onClick={handleJobApply}
-              className={
-                "bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold"
-              }
-            >
-              {"Apply For Job"}
-            </button>
-          )}
-        </div>
+            {role != "Recruiter" && (
+              <button
+                onClick={handleJobApply}
+                className={
+                  "bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold"
+                }
+              >
+                {"Apply For Job"}
+              </button>
+            )}
+          </div>
         <div className="bg-white shadow-md rounded-lg p-6 mb-4">
           <h3 className="text-lg font-semibold text-blue-700 mb-2">
             Job Description

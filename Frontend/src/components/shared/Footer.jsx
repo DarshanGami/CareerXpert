@@ -14,15 +14,21 @@ const Footer = () => {
                     <h2 className="text-xl font-semibold text-gray-500">We're here to help</h2>
                     <p className="text-gray-500 mt-2">Visit our Help Centre for answers to common questions or contact us directly.</p>
                     <div className="mt-4 flex justify-center space-x-4">
-                        <button className="px-4 py-2 border border-gray-400 rounded-md text-blue-600 hover:bg-blue-100">Help Centre</button>
+                        <button className="px-4 py-2 border border-gray-400 rounded-md text-blue-600 hover:bg-blue-100">Help Center</button>
                         <button className="px-4 py-2 border border-gray-400 rounded-md text-blue-600 hover:bg-blue-100">Contact support</button>
                     </div>
                 </div>
 
                 {/* Social Media Icons */}
                 <div className="flex justify-center space-x-6 mt-8">
-                <Link to ="https://www.linkedin.com/in/vivek-vaghela-972679319/"><img src={likdin} alt="LinkedIn" className="w-10 h-10 hover:opacity-70" /></Link>
-                    <Link to="#"><img src={github} alt="GitHub" className="w-10 h-10 hover:opacity-70" /></Link>
+                    <Link to ="https://www.linkedin.com/in/vivek-vaghela-972679319/"><img src={likdin} alt="LinkedIn" className="w-10 h-10 hover:opacity-70" /></Link>
+                    <Link
+                        to="https://github.com/RP-ICONIC/CareerXpert"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >
+                        <img src={github} alt="GitHub" className="w-10 h-10 hover:opacity-70" />
+                    </Link>
                     <Link to="#"><img src={twitter} alt="twitter" className="w-10 h-10 hover:opacity-70" /></Link>
                 </div>
 
