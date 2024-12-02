@@ -11,7 +11,10 @@
     "include": [
       "controllers/userController.js",
       "controllers/companyController.js",
-      "controllers/applicationController.js"
+      "controllers/applicationController.js",
+      "controllers/reviewController.js",
+      "controllers/jobController.js"
+
     ],
     "reporter": [
       "text",
