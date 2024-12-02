@@ -9,7 +9,8 @@
   },
   "nyc": {
     "include": [
-      "controllers/userController.js"
+      "controllers/userController.js",
+      "controllers/companyController.js"
     ],
     "reporter": [
       "text",
