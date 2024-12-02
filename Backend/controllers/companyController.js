@@ -13,6 +13,14 @@ const registerCompany = catchAsync(async (req, res, next) => {
     if (!name || !about) {
       return next(new AppError("Empty required field", 400));
     }
+    
+    if(name.length > 100){
+      return next(new AppError("name can't be of length > 100", 400))
+    }
+
+    if(about.length > 500){
+      return next(new AppError("About can't be of length > 500", 400))
+    }
 
     const company = new Company({
       ...req.body,
@@ -86,39 +94,49 @@ const updateCompany = catchAsync(async (req, res, next) => {
 
   const updateData = { ...req.body };
 
-  const socialLinks = JSON.parse(updateData.socialLinks);
-
-  if (socialLinks.twitter) {
-    const twitterRegex = /^https:\/\/(www\.)?x\.com\//;
-    if (!twitterRegex.test(socialLinks.twitter)) {
-      console.log('error in twitter url')
-      return next(new AppError("Invalid Twitter URL format", 400));
-    }
-  }
-  
-  if (socialLinks.intagram) {
-    const instaRegex = /^https:\/\/(www\.)?instagram\.com\//;
-    if (!instaRegex.test(socialLinks.intagram)) {
-      console.log('error in github url')
-      return next(new AppError("Invalid instagram URL format", 400));
-    }
-  }
-  
-  if (socialLinks.linkedin) {
-    const linkedinRegex = /^https:\/\/(www\.)?linkedin\.com\//;
-    if (!linkedinRegex.test(socialLinks.linkedin)) {
-      console.log('error in linkedin url')
-      return next(new AppError("Invalid LinkedIn URL format", 400));
-    }
+  if(updateData.name.length > 100){
+    return next(new AppError("name can't be of length > 100", 400))
   }
 
-  if (socialLinks.facebook) {
-    const facebookRegex = /^https:\/\/(www\.)?facebook\.com\//;
-    if (!facebookRegex.test(socialLinks.facebook)) {
-      console.log('error in facebook url')
-      return next(new AppError("Invalid Facebook URL format", 400));
-    }
+  
+  if(updateData.about.length > 500){
+    return next(new AppError("About can't be of length > 500", 400))
   }
+
+  // const socialLinks = JSON.parse(updateData.socialLinks);
+
+  // // console.log(socialLinks.twitter)
+  // if (socialLinks.twitter) {
+  //   const twitterRegex = /^https:\/\/(www\.)?x\.com\//;
+  //   if (!twitterRegex.test(socialLinks.twitter)) {
+  //     console.log('error in twitter url')
+  //     return next(new AppError("Invalid Twitter URL format", 400));
+  //   }
+  // }
+  
+  // if (socialLinks.instagram) {
+  //   const instaRegex = /^https:\/\/(www\.)?instagram\.com\//;
+  //   if (!instaRegex.test(socialLinks.instagram)) {
+  //     console.log('error in github url')
+  //     return next(new AppError("Invalid instagram URL format", 400));
+  //   }
+  // }
+  
+  // if (socialLinks.linkedin) {
+  //   const linkedinRegex = /^https:\/\/(www\.)?linkedin\.com\//;
+  //   if (!linkedinRegex.test(socialLinks.linkedin)) {
+  //     console.log('error in linkedin url')
+  //     return next(new AppError("Invalid LinkedIn URL format", 400));
+  //   }
+  // }
+
+  // if (socialLinks.facebook) {
+  //   const facebookRegex = /^https:\/\/(www\.)?facebook\.com\//;
+  //   if (!facebookRegex.test(socialLinks.facebook)) {
+  //     console.log('error in facebook url')
+  //     return next(new AppError("Invalid Facebook URL format", 400));
+  //   }
+  // }
 
   const updatedCompany = await Company.findOneAndUpdate(
     // Check if company belongs to user

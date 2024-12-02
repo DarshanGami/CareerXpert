@@ -207,7 +207,7 @@ const forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // Send token via email
-  const resetURL = `https://careerxpert.onrender.com/reset-password/${resetToken}`;
+  const resetURL = `https://careerxpert.vercel.app/reset-password/${resetToken}`;
   await sendEmail({
     email: user.email,
     subject: "Password Reset Request",
@@ -404,12 +404,7 @@ const updateProfile = [
       "passwordResetExpires",
     ];
 
-    sensitiveFields.forEach(field => {
-      if (updateData[field] !== undefined) {
-          sensitiveFields.forEach(field => delete updateData[field]);
-          return next(new AppError(`Updating ${field} is not allowed via this route.`, 400));
-      }
-    });
+    sensitiveFields.forEach((field) => delete updateData[field]);
 
     if (updateData.skills && Array.isArray(updateData.skills)) {
       const skillPattern = /\d/; // Checks for any numeric characters
@@ -420,6 +415,11 @@ const updateProfile = [
       }
     }
     
+    // console.log(updateData.DOB)
+    // if (new Date(updateData.DOB) > new Date()) {
+    //   return next(new AppError("Deadline cannot be in the past", 400));
+    // }
+
     if(updateData.username){
       if(updateData.username.length<3 || updateData.username.length>30){
         return next(new AppError("Username must be 3 to 30 characters", 400))

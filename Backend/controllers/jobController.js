@@ -25,6 +25,27 @@ const createJob = catchAsync(async (req, res, next) => {
     return next(new AppError("Deadline cannot be in the past", 400));
   }
 
+  if (title.length > 50) {
+    return next(new AppError("title can't be exceed 50 characters", 400));
+  }
+
+  if (description.length > 1000) {
+    return next(new AppError("description can't be exceed 1000 characters", 400));
+  }
+
+  if(requirements){
+    if (requirements.length > 1000) {
+      return next(new AppError("requirements can't be exceed 1000 characters", 400));
+    }
+  }
+
+  if(perks){
+    if (perks.length > 1000) {
+      return next(new AppError("perks can't be exceed 1000 characters", 400));
+    }
+  }
+  
+
   if (
     !title ||
     !description ||
@@ -170,6 +191,34 @@ const getCompanyJobs = catchAsync(async (req, res, next) => {
 
 // Update job
 const updateJob = catchAsync(async (req, res, next) => {
+
+  const { deadline } = req.body;
+  if (new Date(deadline) < new Date()) {
+    return next(new AppError("Deadline cannot be in the past", 400));
+  }
+
+  const updateData = { ...req.body };
+
+  if (updateData.title.length > 50) {
+    return next(new AppError("title can't be exceed 50 characters", 400));
+  }
+
+  if (updateData.description.length > 1000) {
+    return next(new AppError("description can't be exceed 1000 characters", 400));
+  }
+
+  if(updateData.requirements){
+    if (updateData.requirements.length > 1000) {
+      return next(new AppError("requirements can't be exceed 1000 characters", 400));
+    }
+  }
+
+  if(updateData.perks){
+    if (updateData.perks.length > 1000) {
+      return next(new AppError("perks can't be exceed 1000 characters", 400));
+    }
+  }
+
   const job = await Job.findOneAndUpdate(
     { _id: req.params.id, created_by: req.user._id },
     req.body,

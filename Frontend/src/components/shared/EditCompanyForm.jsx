@@ -72,8 +72,8 @@ const EditCompanyForm = (props) => {
       );
 
       // Success feedback
-      toast.success("Company registered successfully!");
-      console.log("Backend response:", response.data);
+      toast.success(response.data.message);
+      // console.log(response);
 
       // Reset form after submission
       setFormData({
