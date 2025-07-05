@@ -1,17 +1,41 @@
-# GRP13_CareerXpert (Job Matching Platforms)
+# CareerXpert - Job Matching Platform
 
-## Project Overview
+🚀 [Live Demo](https://careerxpert.vercel.app/)
 
-The Job-Matching Platform is a web-based application designed to connect job seekers with potential employers, streamlining the hiring process. The platform enables job seekers to find relevant job opportunities based on their skills, experience, and preferences, while employers can post job openings and search for qualified candidates. Our goal is to simplify the job search and recruitment process, making it efficient, transparent, and user-friendly.
+CareerXpert is a full-stack job matching platform designed to bridge the gap between job seekers and companies. It offers a seamless and efficient experience for job seekers to explore opportunities and apply, and for companies to post job openings and find suitable candidates. With support for two user roles—**Job Seeker** and **Employer**—CareerXpert simplifies the hiring process.
 
-# Group Members
-● Smit Shah- 202201192 \
-● Rudra Patel- 202201193 \
-● Vivek Vaghela- 202201197 \
-● Devansh Modi- 202201198 \
-● Ajay Chovatiya- 202201203 \
-● Darshan Gami- 202201205 \
-● Harmit Khimani- 202201231 \
-● Anshu Dhankecha- 202201234 \
-● Marmik Vasava- 202201252 \
-● Nishant Italiya- 202201258
+---
+
+## ✨ Features
+
+### 👤 Job Seeker
+- Register and login
+- Create and update profile with skills, experience, etc.
+- Browse and search job listings
+- Apply to open jobs
+- Track application status
+
+### 🏢 Employer / Company
+- Register and login
+- Create and manage job postings
+- View applicants for each job
+- Respond to applications (Accept / Reject)
+- View applied candidate profiles
+
+### 🔐 Authentication
+- Separate login and registration for Job Seekers and Employers
+- Secure session management
+
+---
+
+## 🛠️ Tech Stack
+
+| Tech           | Description                       |
+|----------------|-----------------------------------|
+| **Frontend**   | React.js, Tailwind CSS            |
+| **Backend**    | Node.js, Express.js               |
+| **Database**   | MongoDB                           |
+| **Authentication** | JWT-based auth for secure login |
+| **Deployment** | Vercel (Frontend), Render/Other (Backend) |
+
+---
